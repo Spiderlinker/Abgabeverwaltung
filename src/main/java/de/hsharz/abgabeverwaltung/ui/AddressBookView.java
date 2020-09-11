@@ -8,9 +8,13 @@ import de.hsharz.abgabeverwaltung.addresses.Person;
 import de.spiderlinker.utils.StringUtils;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -55,7 +59,7 @@ public class AddressBookView {
 
     private void createWidgets() {
         root = new GridPane();
-        root.getStylesheets().add(this.getClass().getResource("/style/dialog/SettingsDialog.css").toExternalForm());
+        root.getStylesheets().add(this.getClass().getResource("/style/dialog/AddressBook.css").toExternalForm());
         root.getStyleClass().add("root");
         root.setPrefSize(700, 500);
         setColumnWidths(root, 20, 60, 20);
@@ -63,6 +67,8 @@ public class AddressBookView {
         lblTitle = new Label("Address Book");
 
         boxGender = new JFXComboBox<>(FXCollections.observableArrayList(Gender.values()));
+        boxGender.setLabelFloat(true);
+        boxGender.getSelectionModel().selectFirst();
 
         fldLastname = new JFXTextField();
         fldLastname.setPromptText("Last name");
@@ -73,18 +79,25 @@ public class AddressBookView {
         fldEmail.setLabelFloat(true);
 
         btnAdd = new JFXButton("Add");
+        btnAdd.setDefaultButton(true);
         btnClose = new JFXButton("Close");
 
         viewPerson = new ListView<>(AddressBook.getContacts());
-        viewPerson.setCellFactory(param -> new PersonView());
+        viewPerson.setCellFactory(param -> {
+            System.out.println("New Cell");
+            return new PersonView();
+        });
         viewPerson.setPlaceholder(new Label("Add a new contact"));
 
         dialog = new JFXDialog(parent, root, JFXDialog.DialogTransition.TOP);
+        parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                dialog.close();
+            }
+        });
     }
 
-
     private void setColumnWidths(GridPane root, int... columnWidths) {
-
         for (int columnWidth : columnWidths) {
             ColumnConstraints c = new ColumnConstraints();
             c.setPercentWidth(columnWidth);
@@ -105,7 +118,7 @@ public class AddressBookView {
 
             fldEmail.clear();
             fldLastname.clear();
-            boxGender.getSelectionModel().select(0);
+            boxGender.getSelectionModel().selectFirst();
 
         });
 

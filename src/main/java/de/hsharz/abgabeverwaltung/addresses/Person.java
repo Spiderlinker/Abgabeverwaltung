@@ -54,7 +54,7 @@ public class Person implements Externalizable {
     }
 
     public void setGender(final Gender gender) {
-        this.gender.set(gender);
+        this.gender.set(Objects.requireNonNull(gender));
     }
 
     public Gender getGender() {

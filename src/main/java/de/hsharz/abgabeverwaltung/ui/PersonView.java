@@ -67,8 +67,7 @@ public class PersonView extends ListCell<Person> {
             setGraphic(null);
             return;
         }
-
-        prefWidthProperty().bind(getListView().widthProperty().subtract(2));
+        prefWidthProperty().bind(getListView().widthProperty().subtract(20));
         setMaxWidth(Control.USE_PREF_SIZE);
 
         lblGender.setText(item.getGender().toString());
