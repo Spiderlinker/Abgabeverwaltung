@@ -1,0 +1,18 @@
+.headerBox {
+    -fx-background-color: #DAE6FC;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.header-label {
+    -fx-font-family: Calibri;
+    -fx-font-weight: bold;
+}
+
+.list-view {
+    -fx-background-color: #DAE6FC;
+}
+
+.list-cell {
+    -fx-padding: 10px;
+}

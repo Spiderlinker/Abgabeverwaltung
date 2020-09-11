@@ -1,0 +1,18 @@
+.root {
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 13pt;
+}
+
+.label {
+    -fx-text-fill: black;
+}
+
+.list-view {
+    -fx-background-color: #6395F2;
+}
+
+.list-cell {
+    -fx-background-color: #f1f3f8;
+    -fx-padding: 0px;
+}
+
