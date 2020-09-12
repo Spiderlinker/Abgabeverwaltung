@@ -4,9 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import de.hsharz.abgabeverwaltung.Module;
 import de.hsharz.abgabeverwaltung.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.ui.dialogs.ModuleDialog;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class SemesterView {
@@ -41,8 +44,10 @@ public class SemesterView {
         boxTop = new HBox(20);
         boxTop.getStyleClass().add("boxTop");
 
-        btnManageProfs = new JFXButton("Manage Professors");
-        btnSettings = new JFXButton("Settings");
+        btnManageProfs = new JFXButton("Manage Professors", getImageView("address_book_bold.png", 24));
+        btnManageProfs.setAlignment(Pos.CENTER_LEFT);
+        btnSettings = new JFXButton("Settings", getImageView("settings_bold.png", 24));
+        btnSettings.setAlignment(Pos.CENTER_LEFT);
         this.btnAddModule = new JFXButton("Modul hinzufügen");
 
         viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
@@ -50,6 +55,14 @@ public class SemesterView {
         viewModules.setPlaceholder(new Label("Click an 'Create Module' to create your first Module"));
 
     }
+
+    private ImageView getImageView(String image, int squareSize) {
+        ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("icons/" + image)));
+        imageView.setFitHeight(squareSize);
+        imageView.setFitWidth(squareSize);
+        return imageView;
+    }
+
 
     private void setupInteractions() {
         this.btnAddModule.setOnAction(e -> {

@@ -13,7 +13,6 @@
 .taskBox:finished {
 	-fx-background-color: #9BD770;
 	-fx-text-fill: #1B3309;
-	-fx-font-family: "Lucida Sans Unicode";
 }
 
 .taskBox:much-time-left {

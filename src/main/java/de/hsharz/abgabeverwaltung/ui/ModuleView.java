@@ -10,6 +10,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Orientation;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 public class ModuleView extends ListCell<Module> {
@@ -42,8 +44,8 @@ public class ModuleView extends ListCell<Module> {
         lblModule.getStyleClass().add("header-label");
 
         btnAddTask = new JFXButton("Add Task");
-        btnRemoveModule = new JFXButton("Remove Module");
-        btnEditModule = new JFXButton("Edit Module");
+        btnRemoveModule = new JFXButton("", getImageView("trash_bold.png", 24));
+        btnEditModule = new JFXButton("", getImageView("edit_bold.png", 24));
 
         viewTasks = new ListView<>();
         viewTasks.setOrientation(Orientation.HORIZONTAL);
@@ -51,6 +53,15 @@ public class ModuleView extends ListCell<Module> {
         viewTasks.setPlaceholder(new Label("Click an 'Add Task' to create your first Task for this Module"));
 
     }
+
+
+    private ImageView getImageView(String image, int squareSize) {
+        ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("icons/" + image)));
+        imageView.setFitHeight(squareSize);
+        imageView.setFitWidth(squareSize);
+        return imageView;
+    }
+
 
     private void setupInteractions() {
         btnAddTask.setOnAction(e -> {
@@ -66,7 +77,7 @@ public class ModuleView extends ListCell<Module> {
 
     private void addWidgets() {
 
-        HBox boxTitle = new HBox(20);
+        HBox boxTitle = new HBox(5);
         boxTitle.getChildren().addAll(lblModule, getHSpacer(), btnAddTask, getHSpacer(), btnEditModule, btnRemoveModule);
         boxTitle.getStyleClass().add("headerBox");
 

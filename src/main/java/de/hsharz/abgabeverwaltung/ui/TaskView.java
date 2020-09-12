@@ -2,7 +2,6 @@ package de.hsharz.abgabeverwaltung.ui;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Random;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -11,13 +10,14 @@ import de.hsharz.abgabeverwaltung.Task;
 import de.hsharz.abgabeverwaltung.ui.dialogs.TaskDialog;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
@@ -38,10 +38,11 @@ public class TaskView extends ListCell<Task> {
 
     private VBox taskBox;
     private Label lblTitle;
-    private Label lblDueDateDescription;
     private Label lblDueDate;
     private Label lblAttachments;
-    private Button btnSave;
+
+    private Button btnDelete;
+    private Button btnSubmit;
 
     private ObjectProperty<Module> module;
     private Task task;
@@ -67,10 +68,12 @@ public class TaskView extends ListCell<Task> {
         this.lblTitle = new Label();
         this.lblTitle.getStyleClass().add("title");
 
-        this.lblDueDate = new Label();
-        this.lblAttachments = new Label();
+        this.lblDueDate = new Label("", getImageView("calendar_bold.png", 24));
 
-        this.btnSave = new JFXButton("Check and Submit");
+        this.lblAttachments = new Label("", getImageView("attachments_bold.png", 24));
+
+        btnDelete = new JFXButton("", getImageView("trash_bold.png", 24));
+        this.btnSubmit = new JFXButton("Review & Submit");
 
         this.dragPane = new BorderPane();
         this.dragPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
@@ -79,6 +82,13 @@ public class TaskView extends ListCell<Task> {
         this.dragPane.setCenter(label);
 
         this.dragPane.setVisible(false);
+    }
+
+    private ImageView getImageView(String image, int squareSize) {
+        ImageView imageView = new ImageView(new Image(getClass().getClassLoader().getResourceAsStream("icons/" + image)));
+        imageView.setFitHeight(squareSize);
+        imageView.setFitWidth(squareSize);
+        return imageView;
     }
 
     private void setupInteractions() {
@@ -90,7 +100,7 @@ public class TaskView extends ListCell<Task> {
 
         this.root.setOnMouseClicked(e -> new TaskDialog(parent, module.get(), task).show());
 
-        btnSave.setOnAction(e -> {
+        btnSubmit.setOnAction(e -> {
 
             new TaskSubmitView(parent, module.get(), task).show();
 
@@ -125,7 +135,12 @@ public class TaskView extends ListCell<Task> {
         this.taskBox.getChildren().add(this.lblDueDate);
         this.taskBox.getChildren().add(this.lblAttachments);
         this.taskBox.getChildren().add(this.getVSpacer());
-        this.taskBox.getChildren().add(this.btnSave);
+
+        HBox boxButton = new HBox();
+        boxButton.getChildren().addAll(btnSubmit);
+        boxButton.setAlignment(Pos.CENTER_RIGHT);
+        this.taskBox.getChildren().add(boxButton);
+
 
         this.root.getChildren().addAll(this.taskBox, this.dragPane);
     }
@@ -135,12 +150,18 @@ public class TaskView extends ListCell<Task> {
     }
 
     public Button getSaveButton() {
-        return this.btnSave;
+        return this.btnSubmit;
     }
 
     private Region getVSpacer() {
         Region region = new Region();
         VBox.setVgrow(region, Priority.ALWAYS);
+        return region;
+    }
+
+    private Region getHSpacer() {
+        Region region = new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
         return region;
     }
 
@@ -190,13 +211,10 @@ public class TaskView extends ListCell<Task> {
 
         lblTitle.textProperty().bind(task.nameProperty());
         lblDueDate.textProperty().bind(Bindings
-                .concat("Abgabedatum: ")
-                .concat(Bindings.when(task.dueDateProperty().isNull())
-                        .then("-")
-                        .otherwise(task.dueDateProperty().asString())));
-        lblAttachments.textProperty().bind(Bindings
-                .concat(task.attachmentsProperty().sizeProperty())
-                .concat(" Dateianhänge"));
+                .when(task.dueDateProperty().isNull())
+                .then("-")
+                .otherwise(task.dueDateProperty().asString()));
+        lblAttachments.textProperty().bind(task.attachmentsProperty().sizeProperty().asString());
 
         setGraphic(root);
     }

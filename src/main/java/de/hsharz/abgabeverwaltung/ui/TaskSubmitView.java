@@ -9,14 +9,17 @@ import de.hsharz.abgabeverwaltung.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.addresses.Person;
 import de.hsharz.abgabeverwaltung.submit.BasicMail;
 import de.hsharz.abgabeverwaltung.submit.MailSender;
+import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.TextAlignment;
 
 import java.io.*;
 import java.util.*;
@@ -81,7 +84,9 @@ public class TaskSubmitView {
         textBody.setLabelFloat(true);
         textBody.setPromptText("Content");
 
-        btnSubmit = new JFXButton("Submit Task");
+        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageViewScaled("mail_send_bold.png", 24));
+        btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
+        btnSubmit.setGraphicTextGap(10);
         btnCancel = new JFXButton("Cancel");
 
         ObservableList<String> attachments = FXCollections.observableArrayList(task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
