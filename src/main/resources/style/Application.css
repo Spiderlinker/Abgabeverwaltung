@@ -1,0 +1,15 @@
+* {
+	-fx-red: #FE8F77;
+	-fx-orange: #FDC168;
+	-fx-yellow: #FEEC86;
+	-fx-green: #9BD770;
+
+	-fx-background-light: #F1F3F8;
+	-fx-background-medium: #DAE6FC;
+	-fx-background-dark: #6395F2;
+
+	-fx-text-fill: black;
+	-fx-font-family: "Calibri Light";
+	-fx-font-size: 13pt;
+}
+

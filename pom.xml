@@ -202,7 +202,7 @@
 							<archive>
 								<manifest>
 									<mainClass>
-										de.hsharz.abgabeverwaltung.Mailer
+										de.hsharz.abgabeverwaltung.Abgabeverwaltung
 									</mainClass>
 								</manifest>
 							</archive>

@@ -1,5 +1,7 @@
 package de.hsharz.abgabeverwaltung;
 
+import de.hsharz.abgabeverwaltung.model.Module;
+import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

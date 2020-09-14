@@ -1,5 +1,7 @@
 package de.hsharz.abgabeverwaltung;
 
+import de.hsharz.abgabeverwaltung.model.Module;
+import de.hsharz.abgabeverwaltung.model.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,8 +9,8 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import de.hsharz.abgabeverwaltung.addresses.Gender;
-import de.hsharz.abgabeverwaltung.addresses.Person;
+import de.hsharz.abgabeverwaltung.model.addresses.Gender;
+import de.hsharz.abgabeverwaltung.model.addresses.Person;
 
 import java.io.*;
 import java.time.LocalDate;

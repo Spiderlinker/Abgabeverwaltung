@@ -11,20 +11,20 @@
 }
 
 .taskBox:finished {
-	-fx-background-color: #9BD770;
+	-fx-background-color: -fx-green;
 	-fx-text-fill: #1B3309;
 }
 
 .taskBox:much-time-left {
-	-fx-background-color: #FEEC86;
+	-fx-background-color: -fx-yellow;
 }
 
 .taskBox:few-time-left {
-	-fx-background-color: #FDC168;
+	-fx-background-color: -fx-orange;
 }
 
 .taskBox:no-time-left {
-	-fx-background-color: #FE8F77;
+	-fx-background-color: -fx-red;
 }
  
 .title {
