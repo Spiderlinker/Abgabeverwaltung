@@ -3,7 +3,9 @@ package de.hsharz.abgabeverwaltung.ui.views;
 import com.jfoenix.controls.JFXButton;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
+import de.hsharz.abgabeverwaltung.ui.dialogs.DialogCache;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractView;
+import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -34,7 +36,7 @@ public class PersonView extends AbstractView<HBox> {
         this.lblEmail = new Label();
         this.lblGender = new Label();
 
-        this.btnDelete = new JFXButton("Entfernen");
+        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
         btnDelete.setMinWidth(50);
     }
 
@@ -52,7 +54,7 @@ public class PersonView extends AbstractView<HBox> {
         return new PersonListCell();
     }
 
-    class PersonListCell extends ListCell<Person> {
+    private class PersonListCell extends ListCell<Person> {
 
         @Override
         protected void updateItem(Person item, boolean empty) {

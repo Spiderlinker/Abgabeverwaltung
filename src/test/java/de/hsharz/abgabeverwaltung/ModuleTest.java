@@ -30,63 +30,63 @@ class ModuleTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "", "   " })
+    @ValueSource(strings = {"", "   "})
     void setNameEmptyFail(final String name) {
         Assertions.assertThrows(NullPointerException.class, () -> this.testObject.setName(name));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "Test", "Semester #1" })
+    @ValueSource(strings = {"Test", "Semester #1"})
     void getName(final String name) {
         this.testObject.setName(name);
         Assertions.assertEquals(name, this.testObject.getName());
     }
 
-    @Test
-    void getProfessorEmpty() {
-        Assertions.assertNotNull(this.testObject.getProfessors());
-        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-    }
-
-    @Test
-    void addProfessor() {
-        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-
-        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
-        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-
-        this.testObject.addProfessors(p);
-        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-        this.testObject.addProfessors(p2);
-        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-        this.testObject.addProfessors(p2);
-        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-    }
-
-    @Test
-    void addProfessorNull() {
-        Assertions.assertThrows(NullPointerException.class, () -> this.testObject.addProfessors((Person[]) null));
-    }
-
-    @Test
-    void removeProfessor() {
-        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-
-        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
-        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-
-        this.testObject.addProfessors(p);
-        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-        this.testObject.addProfessors(p2);
-        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-
-        this.testObject.removeProfessor(p);
-        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-        this.testObject.removeProfessor(p);
-        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-        this.testObject.removeProfessor(p2);
-        Assertions.assertEquals(0, this.testObject.getProfessors().size());
-    }
+//    @Test
+//    void getProfessorEmpty() {
+//        Assertions.assertNotNull(this.testObject.getProfessors());
+//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+//    }
+//
+//    @Test
+//    void addProfessor() {
+//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+//
+//        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
+//        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
+//
+//        this.testObject.addProfessors(p);
+//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+//        this.testObject.addProfessors(p2);
+//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+//        this.testObject.addProfessors(p2);
+//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+//    }
+//
+//    @Test
+//    void addProfessorNull() {
+//        Assertions.assertThrows(NullPointerException.class, () -> this.testObject.addProfessors((Person[]) null));
+//    }
+//
+//    @Test
+//    void removeProfessor() {
+//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+//
+//        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
+//        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
+//
+//        this.testObject.addProfessors(p);
+//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+//        this.testObject.addProfessors(p2);
+//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+//
+//        this.testObject.removeProfessor(p);
+//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+//        this.testObject.removeProfessor(p);
+//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+//        this.testObject.removeProfessor(p2);
+//        Assertions.assertEquals(0, this.testObject.getProfessors().size());
+//    }
 
     @Test
     void getTasksEmpty() {
@@ -150,7 +150,7 @@ class ModuleTest {
         Person person = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
         Person person2 = new Person("Prof#3", "profasdf@hs-harz.de", Gender.DIVERS);
 
-        testObject.addProfessors(person, person2);
+        testObject.setProfessor(person);
         testObject.addTask(task);
         testObject.addTask(task2);
 
@@ -168,10 +168,7 @@ class ModuleTest {
         Assertions.assertNotNull(readTask);
 
         Assertions.assertEquals(testObject.getName(), readTask.getName());
-        Assertions.assertEquals(testObject.getProfessors().size(), readTask.getProfessors().size());
-        for (Person p : readTask.getProfessors()) {
-            Assertions.assertTrue(testObject.getProfessors().contains(p));
-        }
+        Assertions.assertTrue(testObject.getProfessor().equals(readTask.getProfessor()));
 
         Assertions.assertEquals(testObject.getTasks().size(), readTask.getTasks().size());
         for (Task t : readTask.getTasks()) {

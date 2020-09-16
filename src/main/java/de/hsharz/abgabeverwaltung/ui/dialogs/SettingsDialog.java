@@ -10,18 +10,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class SettingsDialog extends JFXDialog {
+public class SettingsDialog extends AbstractDialog {
 
     private SettingsDialogView settingsDialogView;
     private Properties properties = new Properties();
 
 
     public SettingsDialog(StackPane parent) {
-        super(parent, null, DialogTransition.TOP);
+        super(parent, DialogTransition.TOP);
 
         createWidgets();
         setupInteractions();
-
+        enableCloseOnEscape();
         loadConfiguration();
     }
 
@@ -30,14 +30,12 @@ public class SettingsDialog extends JFXDialog {
         setContent(settingsDialogView.getPane());
     }
 
-
     private void setupInteractions() {
-
         settingsDialogView.btnCancel.setOnAction(e -> close());
-
 
         settingsDialogView.btnSave.setOnAction(e -> {
             try {
+                properties.put("mail.name", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldName.getText(), ""));
                 properties.put("mail.username", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldEmail.getText(), ""));
                 properties.put("mail.password", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldPassword.getText(), ""));
                 properties.put("mail.bcc", String.valueOf(settingsDialogView.boxSendBccToMyself.isSelected()));

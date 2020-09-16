@@ -1,3 +1,5 @@
+# Mail Server Configuration
+mail.imap.host=postbox.hs-harz.de
 mail.smtp.host=sendmail.hs-harz.de
 mail.smtp.port=25
 mail.smtp.auth=true

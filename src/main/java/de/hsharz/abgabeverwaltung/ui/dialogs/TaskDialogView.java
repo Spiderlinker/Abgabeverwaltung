@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import de.hsharz.abgabeverwaltung.model.Task;
+import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.views.AttachmentView;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
@@ -69,16 +70,16 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
 
         this.textDescription = new JFXTextArea();
         textDescription.textProperty().bindBidirectional(task.descriptionProperty());
-        this.textDescription.setPromptText("Beschreibung der Aufgabe...");
+        this.textDescription.setPromptText("Description of this task...");
 
         this.viewAttachments = new ListView<>(task.getAttachments());
         this.viewAttachments.setCellFactory(param -> new AttachmentView(task).newListCell());
-        viewAttachments.setPrefHeight(50);
+        viewAttachments.setPrefHeight(120);
         viewAttachments.setPlaceholder(new Label("Drag&Drop files here to attach to this task"));
 
-        this.btnDelete = new JFXButton("Aufgabe löschen");
+        this.btnDelete = new JFXButton("Delete Task", ImageLibrary.getImageView("trash_bold.png"));
 
-        this.btnSave = new JFXButton("Speichern");
+        this.btnSave = new JFXButton("Save & Close");
         btnSave.disableProperty().bind(task.nameProperty().isEmpty());
         btnSave.setDefaultButton(true);
     }

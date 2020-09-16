@@ -6,11 +6,13 @@ import com.jfoenix.controls.JFXTextField;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
-import de.hsharz.abgabeverwaltung.ui.views.PersonView;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
+import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
+import de.hsharz.abgabeverwaltung.ui.views.PersonView;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -42,10 +44,11 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
     @Override
     protected void createWidgets() {
         root.getStyleClass().add("root");
-        root.setPrefSize(700, 500);
+        root.setPrefSize(700, 600);
         LayoutUtils.setColumnWidths(root, 20, 60, 20);
 
         lblTitle = new Label("Address Book");
+        lblTitle.getStyleClass().add("title");
 
         boxGender = new JFXComboBox<>(FXCollections.observableArrayList(Gender.values()));
         boxGender.setLabelFloat(true);
@@ -59,7 +62,7 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
         fldEmail.setPromptText("E-Mail-Address");
         fldEmail.setLabelFloat(true);
 
-        btnAdd = new JFXButton("Add");
+        btnAdd = new JFXButton("Add", ImageLibrary.getImageView("add_contact_bold.png"));
         btnAdd.setDefaultButton(true);
         btnClose = new JFXButton("Close");
 
@@ -96,8 +99,9 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
 
         root.add(viewPerson, 0, 3, 3, 1);
         root.add(btnClose, 2, 4);
-    }
 
+        GridPane.setHalignment(lblTitle, HPos.CENTER);
+    }
 
 
 }

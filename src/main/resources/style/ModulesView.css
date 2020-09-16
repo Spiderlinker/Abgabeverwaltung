@@ -1,14 +1,14 @@
 .mainPane {
-    -fx-background-color: #6395F2;
+    -fx-background-color: -fx-background-dark;
     -fx-alignment: center;
 
 }
 
 .labelTitle {
     -fx-font-size: 20;
-    -fx-font-family: "Arial Black";
+    -fx-font-family: "Lucida Sans Unicode";
     -fx-padding: 20px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-text-fill: -fx-background-light;
 }
 

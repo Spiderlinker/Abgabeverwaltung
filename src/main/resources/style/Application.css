@@ -8,8 +8,36 @@
 	-fx-background-medium: #DAE6FC;
 	-fx-background-dark: #6395F2;
 
-	-fx-text-fill: black;
-	-fx-font-family: "Calibri Light";
-	-fx-font-size: 13pt;
+	/*-fx-text-fill: black;*/
 }
 
+.root {
+	-fx-font-size: 13pt;
+	-fx-font-family: "Lucida Sans Unicode";
+ 	-fx-focus-color: transparent;
+}
+
+.title {
+	-fx-font-size: 24pt;
+	-fx-font-weight: bold;
+}
+
+.label {
+	-fx-text-fill: black;
+}
+
+.list-view {
+	-fx-background-color: -fx-background-medium;
+	-fx-background-insets: 0;
+	-fx-padding: 0;
+}
+
+.list-cell {
+	-fx-background-color: -fx-background-light;
+	-fx-padding: 0;
+	-fx-text-fill: black;
+}
+
+.list-cell:hover {
+	-fx-text-fill: -fx-background-dark;
+}

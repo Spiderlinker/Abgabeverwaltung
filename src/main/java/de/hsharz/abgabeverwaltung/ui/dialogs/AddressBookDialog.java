@@ -1,19 +1,17 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
-import com.jfoenix.controls.JFXDialog;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 
-public class AddressBookDialog extends JFXDialog {
+public class AddressBookDialog extends AbstractDialog {
 
     private AddressBookDialogView addressBookDialogView;
 
     public AddressBookDialog(StackPane parent) {
-        super(parent, null, DialogTransition.TOP);
+        super(parent, DialogTransition.TOP);
 
         createWidgets();
         setupInteractions();
+        enableCloseOnEscape();
     }
 
     private void createWidgets() {
@@ -22,12 +20,6 @@ public class AddressBookDialog extends JFXDialog {
     }
 
     private void setupInteractions() {
-
-        getDialogContainer().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                close();
-            }
-        });
         addressBookDialogView.btnClose.setOnAction(e -> close());
     }
 

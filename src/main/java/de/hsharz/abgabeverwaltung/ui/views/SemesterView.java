@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.ui.dialogs.AddressBookDialog;
+import de.hsharz.abgabeverwaltung.ui.dialogs.DialogCache;
 import de.hsharz.abgabeverwaltung.ui.dialogs.ModuleDialog;
 import de.hsharz.abgabeverwaltung.ui.dialogs.SettingsDialog;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
@@ -31,6 +32,7 @@ public class SemesterView extends AbstractStyledView<StackPane> {
         super(new StackPane());
 
         initializeView();
+        DialogCache.init(root);
     }
 
     @Override
@@ -49,15 +51,15 @@ public class SemesterView extends AbstractStyledView<StackPane> {
         boxTop = new HBox(20);
         boxTop.getStyleClass().add("boxTop");
 
-        btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageViewScaled("address_book_bold.png", 24));
+        btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book_bold.png"));
         btnManageProfs.setAlignment(Pos.CENTER_LEFT);
-        btnSettings = new JFXButton("Settings", ImageLibrary.getImageViewScaled("settings_bold.png", 24));
+        btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings_bold.png"));
         btnSettings.setAlignment(Pos.CENTER_LEFT);
         this.btnAddModule = new JFXButton("Modul hinzufügen");
 
         viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
         viewModules.setCellFactory(param -> new ModuleView(root).newListCell());
-        viewModules.setPlaceholder(new Label("Click an 'Create Module' to create your first Module"));
+        viewModules.setPlaceholder(new Label("Click 'Create Module' to create your first Module"));
 
     }
 
@@ -70,11 +72,9 @@ public class SemesterView extends AbstractStyledView<StackPane> {
             new ModuleDialog(root, module).show();
         });
 
-        btnManageProfs.setOnAction(e -> new AddressBookDialog(root).show());
+        btnManageProfs.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.ADDRESS_BOOK).show());
 
-        btnSettings.setOnAction(e -> {
-            new SettingsDialog(root).show();
-        });
+        btnSettings.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.SETTINGS).show());
     }
 
     @Override

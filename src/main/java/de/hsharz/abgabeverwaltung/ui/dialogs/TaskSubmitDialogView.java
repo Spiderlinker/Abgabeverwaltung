@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
+import de.hsharz.abgabeverwaltung.model.addresses.Gender;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.hsharz.abgabeverwaltung.submit.BasicMail;
 import de.hsharz.abgabeverwaltung.submit.MailSender;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
 
     private String submissionTitle = "%s - Abgabe %s";
-    private String body = "Hallo Herr %s, \n\nim Anhang finden Sie meine Abgabe für die Aufgabe '%s' in dem Modul '%s'. \n\n\nMit freundlichen Grüßen\n%s";
+    private String body = "Hallo %s %s, \n\nim Anhang finden Sie meine Abgabe für die Aufgabe '%s' in dem Modul '%s'. \n\n\nMit freundlichen Grüßen\n%s";
 
     private Label lblTitle;
     protected JFXTextField fldSubject;
@@ -64,9 +65,9 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         lblTitle = new Label("Submit Task");
         lblTitle.getStyleClass().add("title");
 
-        fldRecipient = new JFXTextField(module.getProfessors().stream().map(Person::getEmail).collect(Collectors.joining(", ")));
+        fldRecipient = new JFXTextField(module.getProfessor().getEmail());
         fldRecipient.setLabelFloat(true);
-        fldRecipient.setPromptText("Recipient");
+        fldRecipient.setPromptText("Recipient (Comma separated)");
 
         fldSubject = new JFXTextField(String.format(submissionTitle, module.getName(), task.getName()));
         if (task.getCustomSubmissionTitle() != null && !task.getCustomSubmissionTitle().trim().isEmpty()) {
@@ -75,11 +76,15 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         fldSubject.setLabelFloat(true);
         fldSubject.setPromptText("Submission Title / Subject");
 
-        textBody = new JFXTextArea(String.format(body, module.getProfessors().get(0).getLastname(), task.getName(), module.getName(), "Oliver Lindemann"));
+        String anrede = module.getProfessor().getGender().toString();
+        if(Gender.DIVERS.equals(module.getProfessor().getGender())){
+            anrede = ",";
+        }
+        textBody = new JFXTextArea(String.format(body, anrede, module.getProfessor().getLastname(), task.getName(), module.getName(), ""));
         textBody.setLabelFloat(true);
         textBody.setPromptText("Content");
 
-        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageViewScaled("mail_send_bold.png", 24));
+        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send_bold.png"));
         btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
         btnSubmit.setGraphicTextGap(10);
         btnCancel = new JFXButton("Cancel");

@@ -22,10 +22,14 @@ public class ImageLibrary {
     }
 
     public static ImageView getImageViewScaled(String imageName, int size) {
-        ImageView imageView = new ImageView(getImage(imageName));
+        ImageView imageView = getImageView(imageName);
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
         return imageView;
+    }
+
+    public static ImageView getImageView(String imageName) {
+        return new ImageView(getImage(imageName));
     }
 
     private static void loadImageFromResources(String imageName) {

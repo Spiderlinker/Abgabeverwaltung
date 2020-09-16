@@ -1,31 +1,27 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
-import com.jfoenix.controls.*;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
+import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXTextField;
 import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
-import de.spiderlinker.utils.StringUtils;
+import javafx.geometry.HPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
 public class SettingsDialogView extends AbstractStyledView<GridPane> {
 
     private Label lblTitle;
 
+    protected JFXTextField fldName;
     protected JFXTextField fldEmail;
     protected JFXPasswordField fldPassword;
     protected JFXCheckBox boxSendBccToMyself;
@@ -52,6 +48,11 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
         LayoutUtils.setColumnWidths(root, 50, 50);
 
         lblTitle = new Label("Settings");
+        lblTitle.getStyleClass().add("title");
+
+        fldName = new JFXTextField();
+        fldName.setPromptText("Your Name");
+        fldName.setLabelFloat(true);
 
         fldEmail = new JFXTextField();
         fldEmail.setPromptText("Your E-Mail-Address");
@@ -85,15 +86,20 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
     @Override
     protected void addWidgets() {
         root.add(lblTitle, 0, 0, 2, 1);
-        root.add(fldEmail, 0, 1);
-        root.add(fldPassword, 1, 1);
-        root.add(boxSendBccToMyself, 0, 2, 2, 1);
-        root.add(btnOpenConfigurationFile, 0, 3, 2, 1);
-        root.add(btnCancel, 0, 4);
-        root.add(btnSave, 1, 4);
+        root.add(fldName, 0, 1, 2, 1);
+        root.add(fldEmail, 0, 2);
+        root.add(fldPassword, 1, 2);
+        root.add(boxSendBccToMyself, 0, 3, 2, 1);
+        root.add(btnOpenConfigurationFile, 0, 4, 2, 1);
+        root.add(btnCancel, 0, 5);
+        root.add(btnSave, 1, 5);
+
+        GridPane.setHalignment(lblTitle, HPos.CENTER);
+        GridPane.setHalignment(btnSave, HPos.RIGHT);
     }
 
     protected void updateConfigurationSettings(Properties properties) {
+        fldName.setText(properties.getProperty("mail.from"));
         fldEmail.setText(properties.getProperty("mail.username"));
         fldPassword.setText(properties.getProperty("mail.password"));
         boxSendBccToMyself.setSelected(Boolean.parseBoolean(properties.getProperty("mail.bcc")));

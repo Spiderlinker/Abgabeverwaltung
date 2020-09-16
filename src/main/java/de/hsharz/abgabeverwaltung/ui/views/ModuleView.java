@@ -52,13 +52,13 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
         lblModule.getStyleClass().add("header-label");
 
         btnAddTask = new JFXButton("Add Task");
-        btnRemoveModule = new JFXButton("", ImageLibrary.getImageViewScaled("trash_bold.png", 24));
-        btnEditModule = new JFXButton("", ImageLibrary.getImageViewScaled("edit_bold.png", 24));
+        btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
+        btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit_bold.png"));
 
         viewTasks = new ListView<>();
         viewTasks.setOrientation(Orientation.HORIZONTAL);
         viewTasks.setCellFactory(param -> new TaskView(parent, module).newListCell());
-        viewTasks.setPlaceholder(new Label("Click an 'Add Task' to create your first Task for this Module"));
+        viewTasks.setPlaceholder(new Label("Click 'Add Task' to create your first Task for this Module"));
 
     }
 
@@ -79,7 +79,7 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
     protected void addWidgets() {
 
         HBox boxTitle = new HBox(5);
-        boxTitle.getChildren().addAll(lblModule, LayoutUtils.getHSpacer(), btnAddTask, LayoutUtils.getHSpacer(), btnEditModule, btnRemoveModule);
+        boxTitle.getChildren().addAll(btnAddTask, LayoutUtils.getHSpacer(), lblModule, LayoutUtils.getHSpacer(), btnEditModule, btnRemoveModule);
         boxTitle.getStyleClass().add("headerBox");
 
         root.setTop(boxTitle);
@@ -91,7 +91,7 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
         return new ModuleListCell();
     }
 
-    class ModuleListCell extends ListCell<Module> {
+    private class ModuleListCell extends ListCell<Module> {
 
         @Override
         protected void updateItem(Module item, boolean empty) {

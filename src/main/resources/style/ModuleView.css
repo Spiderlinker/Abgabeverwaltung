@@ -1,16 +1,18 @@
 .headerBox {
-    -fx-background-color: #DAE6FC;
+    -fx-background-color: -fx-background-medium;
     -fx-padding: 10px;
     -fx-alignment: center;
 }
 
 .header-label {
     -fx-font-family: Calibri;
+    -fx-font-size: 15pt;
     -fx-font-weight: bold;
+    -fx-text-fill: #091833;
 }
 
 .list-view {
-    -fx-background-color: #DAE6FC;
+    -fx-background-color: -fx-background-light;
 }
 
 .list-cell {

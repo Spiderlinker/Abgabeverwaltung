@@ -2,6 +2,7 @@ package de.hsharz.abgabeverwaltung.ui.views;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -9,18 +10,20 @@ import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.ui.dialogs.TaskDialog;
 import de.hsharz.abgabeverwaltung.ui.dialogs.TaskSubmitDialog;
-import de.hsharz.abgabeverwaltung.ui.dialogs.TaskSubmitDialogView;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.css.PseudoClass;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
@@ -41,7 +44,11 @@ public class TaskView extends AbstractStyledView<StackPane> {
     private Label lblDueDate;
     private Label lblAttachments;
 
+    private HBox boxButton;
+
     private Button btnSubmit;
+    private Button btnDelete;
+    private Button btnRedo;
 
     private ObjectProperty<Module> module;
 
@@ -70,11 +77,18 @@ public class TaskView extends AbstractStyledView<StackPane> {
         this.lblTitle = new Label();
         this.lblTitle.getStyleClass().add("title");
 
-        this.lblDueDate = new Label("", ImageLibrary.getImageViewScaled("calendar_bold.png", 24));
+        Tooltip tooltipTitle = new Tooltip();
+        tooltipTitle.textProperty().bind(lblTitle.textProperty());
+        lblTitle.setTooltip(tooltipTitle);
 
-        this.lblAttachments = new Label("", ImageLibrary.getImageViewScaled("attachments_bold.png", 24));
+        this.lblDueDate = new Label("", ImageLibrary.getImageView("calendar_bold.png"));
 
-        this.btnSubmit = new JFXButton("Review & Submit");
+        this.lblAttachments = new Label("", ImageLibrary.getImageView("attachments_bold.png"));
+
+        boxButton = new HBox(10);
+        this.btnSubmit = new JFXButton("Review & Submit", ImageLibrary.getImageView("check_next_bold.png"));
+        btnRedo = new JFXButton("Re-Open", ImageLibrary.getImageView("repeat_bold.png"));
+        btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
 
         this.dragPane = new BorderPane();
         this.dragPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
@@ -97,9 +111,9 @@ public class TaskView extends AbstractStyledView<StackPane> {
 
         btnSubmit.setOnAction(e -> {
             new TaskSubmitDialog(parent, module.get(), task).show();
-
-
         });
+        btnRedo.setOnAction(e -> task.setFinished(false));
+        btnDelete.setOnAction(e -> module.get().removeTask(task));
 
         this.dragPane.setOnDragOver(event -> {
             if (event.getGestureSource() != this.dragPane && event.getDragboard().hasFiles()) {
@@ -132,7 +146,6 @@ public class TaskView extends AbstractStyledView<StackPane> {
         this.taskBox.getChildren().add(this.lblAttachments);
         this.taskBox.getChildren().add(LayoutUtils.getVSpacer());
 
-        HBox boxButton = new HBox();
         boxButton.getChildren().addAll(btnSubmit);
         boxButton.setAlignment(Pos.CENTER_RIGHT);
         this.taskBox.getChildren().add(boxButton);
@@ -141,16 +154,21 @@ public class TaskView extends AbstractStyledView<StackPane> {
         this.root.getChildren().addAll(this.taskBox, this.dragPane);
     }
 
-    public Button getSaveButton() {
+    public Button getSubmitButton() {
         return this.btnSubmit;
     }
-
 
     public ListCell<Task> newListCell() {
         return new TaskListCell();
     }
 
-    class TaskListCell extends ListCell<Task> {
+    private class TaskListCell extends ListCell<Task> implements ChangeListener<Boolean> {
+
+        @Override
+        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+            updateItem(task, task == null);
+            System.out.println("Update called " + task.getName());
+        }
 
         @Override
         protected void updateItem(Task item, boolean empty) {
@@ -161,50 +179,64 @@ public class TaskView extends AbstractStyledView<StackPane> {
                 return;
             }
 
+            if (task != null) {
+                task.isFinishedProperty().removeListener(this);
+            }
+
             task = item;
+            task.isFinishedProperty().addListener(this);
 
-            task.isFinishedProperty().addListener((observable, oldValue, newValue) -> {
-                taskBox.pseudoClassStateChanged(finished, oldValue);
-                taskBox.pseudoClassStateChanged(noTimeLeft, oldValue);
-                taskBox.pseudoClassStateChanged(fewTimeLeft, oldValue);
+            resetTaskViewToDefault();
+            setupButtonsAndColoring();
+            setupTextComponents();
 
-                taskBox.pseudoClassStateChanged(finished, newValue);
-            });
+            setGraphic(root);
+        }
 
+        private void resetTaskViewToDefault() {
+            resetPseudoClasses();
+            lblTitle.setGraphic(null);
+            boxButton.getChildren().clear();
+        }
+
+        private void resetPseudoClasses() {
             taskBox.pseudoClassStateChanged(finished, false);
             taskBox.pseudoClassStateChanged(noTimeLeft, false);
             taskBox.pseudoClassStateChanged(fewTimeLeft, false);
+            taskBox.pseudoClassStateChanged(muchTimeLeft, false);
+        }
 
-            taskBox.pseudoClassStateChanged(muchTimeLeft, true);
-
+        private void setupButtonsAndColoring() {
             if (task.isFinished()) {
-                taskBox.pseudoClassStateChanged(muchTimeLeft, false);
+                lblTitle.setGraphic(ImageLibrary.getImageView("finished_bold.png"));
+                boxButton.getChildren().addAll(btnDelete, btnRedo);
                 taskBox.pseudoClassStateChanged(finished, true);
-            } else if (task.getDueDate() != null) {
-                if (LocalDate.now().isAfter(task.getDueDate().minusDays(2))) {
-                    taskBox.pseudoClassStateChanged(finished, false);
-                    taskBox.pseudoClassStateChanged(muchTimeLeft, false);
-                    taskBox.pseudoClassStateChanged(fewTimeLeft, false);
+            } else {
+                boxButton.getChildren().add(btnSubmit);
 
-                    taskBox.pseudoClassStateChanged(noTimeLeft, true);
-                } else if (LocalDate.now().isAfter(task.getDueDate().minusDays(4))) {
-                    taskBox.pseudoClassStateChanged(finished, false);
-                    taskBox.pseudoClassStateChanged(muchTimeLeft, false);
-                    taskBox.pseudoClassStateChanged(noTimeLeft, false);
-
-                    taskBox.pseudoClassStateChanged(fewTimeLeft, true);
+                if (task.getDueDate() == null) {
+                    taskBox.pseudoClassStateChanged(muchTimeLeft, true);
+                } else {
+                    if (LocalDate.now().isAfter(task.getDueDate().minusDays(2))) {
+                        taskBox.pseudoClassStateChanged(noTimeLeft, true);
+                    } else if (LocalDate.now().isAfter(task.getDueDate().minusDays(4))) {
+                        taskBox.pseudoClassStateChanged(fewTimeLeft, true);
+                    } else {
+                        taskBox.pseudoClassStateChanged(muchTimeLeft, true);
+                    }
                 }
             }
+        }
 
+        private void setupTextComponents() {
             lblTitle.textProperty().bind(task.nameProperty());
             lblDueDate.textProperty().bind(Bindings
                     .when(task.dueDateProperty().isNull())
                     .then("-")
                     .otherwise(task.dueDateProperty().asString()));
             lblAttachments.textProperty().bind(task.attachmentsProperty().sizeProperty().asString());
-
-            setGraphic(root);
         }
+
     }
 
 

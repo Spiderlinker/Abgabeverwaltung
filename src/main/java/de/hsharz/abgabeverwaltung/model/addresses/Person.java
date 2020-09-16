@@ -66,7 +66,7 @@ public class Person implements Externalizable {
 
     @Override
     public String toString() {
-        return this.lastname.get() + " - " + this.email.get();
+        return this.gender.get() + " " + this.lastname.get() + " - " + this.email.get();
     }
 
     @Override

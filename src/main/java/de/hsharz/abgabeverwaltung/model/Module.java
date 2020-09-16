@@ -7,6 +7,8 @@ import java.util.Objects;
 
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.spiderlinker.utils.StringUtils;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -15,16 +17,20 @@ import javafx.collections.ObservableList;
 public class Module implements Externalizable {
 
     private StringProperty         name       = new SimpleStringProperty("DefaultName");
-    private ObservableList<Person> professors = FXCollections.observableArrayList();
+    private ObjectProperty<Person> professor = new SimpleObjectProperty<>();
     private ObservableList<Task>   tasks      = FXCollections.observableArrayList();
 
     public Module() {
         // Used for Externalizable
     }
 
-    public Module(final String name, final Person... profs) {
+    public Module(final String name) {
         this.setName(name);
-        this.addProfessors(profs);
+    }
+
+    public Module(final String name, final Person prof) {
+        this.setName(name);
+        this.setProfessor(prof);
     }
 
     public void setName(final String name) {
@@ -39,26 +45,34 @@ public class Module implements Externalizable {
         return this.name;
     }
 
-    public void addProfessors(final Person... profs) {
-        Objects.requireNonNull(profs);
-        for (Person prof : profs) {
-            this.addProfessor(prof);
-        }
+//    public void addProfessors(final Person... profs) {
+//        Objects.requireNonNull(profs);
+//        for (Person prof : profs) {
+//            this.addProfessor(prof);
+//        }
+//    }
+//
+//    private void addProfessor(final Person prof) {
+//        Objects.requireNonNull(prof);
+//        if (!this.professors.contains(prof)) {
+//            this.professors.add(prof);
+//        }
+//    }
+//
+//    public void removeProfessor(final Person p) {
+//        this.professors.remove(p);
+//    }
+
+    public void setProfessor(Person person) {
+        this.professor.set(person);
     }
 
-    private void addProfessor(final Person prof) {
-        Objects.requireNonNull(prof);
-        if (!this.professors.contains(prof)) {
-            this.professors.add(prof);
-        }
+    public Person getProfessor() {
+        return this.professor.get();
     }
 
-    public void removeProfessor(final Person p) {
-        this.professors.remove(p);
-    }
-
-    public ObservableList<Person> getProfessors() {
-        return this.professors;
+    public ObjectProperty<Person> professorProperty() {
+        return this.professor;
     }
 
     public void addTask(final Task task) {
@@ -86,14 +100,14 @@ public class Module implements Externalizable {
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
         out.writeUTF(name.get());
-        out.writeObject(new ArrayList<>(professors));
+        out.writeObject(professor.get());
         out.writeObject(new ArrayList<>(tasks));
     }
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         name.set(in.readUTF());
-        professors.addAll((List<Person>)in.readObject());
+        professor.set((Person)in.readObject());
         tasks.addAll((List<Task>)in.readObject());
     }
 }

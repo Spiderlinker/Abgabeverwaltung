@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXButton;
 
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractView;
+import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -34,7 +35,7 @@ public class AttachmentView extends AbstractView<HBox> {
         this.lblPath = new Label();
         this.lblPath.setTextOverrun(OverrunStyle.LEADING_WORD_ELLIPSIS);
 
-        this.btnDelete = new JFXButton("Entfernen");
+        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
         btnDelete.setMinWidth(50);
     }
 
@@ -54,7 +55,7 @@ public class AttachmentView extends AbstractView<HBox> {
         return new AttachmentListCell();
     }
 
-    class AttachmentListCell extends ListCell<File> {
+    private class AttachmentListCell extends ListCell<File> {
 
         @Override
         protected void updateItem(File item, boolean empty) {
@@ -67,7 +68,7 @@ public class AttachmentView extends AbstractView<HBox> {
                 return;
             }
 
-            prefWidthProperty().bind(getListView().widthProperty().subtract(2));
+            prefWidthProperty().bind(getListView().widthProperty().subtract(20));
             setMaxWidth(Control.USE_PREF_SIZE);
 
             lblPath.setText(item.getAbsolutePath());

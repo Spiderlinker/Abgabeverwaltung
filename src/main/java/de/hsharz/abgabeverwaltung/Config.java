@@ -13,4 +13,6 @@ public class Config {
 
     public static final File EMAIL_CONFIGURATION_FILE = new File(APPLICATION_FOLDER.getAbsolutePath(), "email.configuration");
     public static final File EMAIL_SERVER_CONFIGURATION_FILE = new File(APPLICATION_FOLDER.getAbsolutePath(), "email_server.configuration");
+
+
 }

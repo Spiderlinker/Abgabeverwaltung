@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.nio.file.Files;
 
 public class Abgabeverwaltung extends Application {
 
@@ -21,18 +23,28 @@ public class Abgabeverwaltung extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        String userHomeDirectory = System.getProperty("user.home");
-        File appHome = new File(userHomeDirectory, "Abgabenverwaltung");
-        File moduledb = new File(appHome, "modules.db");
-        File persondb = new File(appHome, "addressBook.db");
+        Config.APPLICATION_FOLDER.mkdirs();
 
-        appHome.mkdirs();
-
-        if (persondb.exists()) {
-            AddressBook.readFromFile(persondb);
+        if(!Config.EMAIL_SERVER_CONFIGURATION_FILE.exists()) {
+            Files.copy(getClass().getResourceAsStream("/mail/email_server.configuration"), Config.EMAIL_SERVER_CONFIGURATION_FILE.toPath());
         }
-        if (moduledb.exists()) {
-            ModuleDatabase.getInstance().loadFrom(moduledb);
+        if(!Config.EMAIL_CONFIGURATION_FILE.exists()) {
+            Files.copy(getClass().getResourceAsStream("/mail/email.configuration"), Config.EMAIL_CONFIGURATION_FILE.toPath());
+        }
+
+        if (Config.ADDRESS_BOOK_FILE.exists()) {
+            try {
+                AddressBook.readFromFile(Config.ADDRESS_BOOK_FILE);
+            } catch (InvalidClassException e) {
+                Config.ADDRESS_BOOK_FILE.renameTo(new File(Config.APPLICATION_FOLDER, "*INVALID* AddressBook.db"));
+            }
+        }
+        if (Config.MODULES_FILE.exists()) {
+            try {
+                ModuleDatabase.getInstance().loadFrom(Config.MODULES_FILE);
+            } catch (InvalidClassException e) {
+                Config.MODULES_FILE.renameTo(new File(Config.APPLICATION_FOLDER, "*INVALID* Modules.db"));
+            }
         }
 
         Scene scene = new Scene(new SemesterView().getPane(), 1400, 850);
@@ -40,12 +52,12 @@ public class Abgabeverwaltung extends Application {
         stage.setScene(scene);
         stage.setOnCloseRequest(e -> {
             try {
-                ModuleDatabase.getInstance().saveTo(moduledb);
+                ModuleDatabase.getInstance().saveTo(Config.MODULES_FILE);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
             try {
-                AddressBook.writeToFile(persondb);
+                AddressBook.writeToFile(Config.ADDRESS_BOOK_FILE);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

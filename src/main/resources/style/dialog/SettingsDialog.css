@@ -1,10 +1,3 @@
-.root {
-    -fx-padding: 20px;
-    -fx-hgap: 20px;
-    -fx-vgap: 40px;
-}
+@import "DefaultDialog.css";
 
-.title {
-    -fx-font-size: 18pt;
-}
 

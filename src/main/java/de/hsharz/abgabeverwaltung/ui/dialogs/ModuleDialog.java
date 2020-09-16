@@ -8,17 +8,19 @@ import javafx.scene.layout.StackPane;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class ModuleDialog extends JFXDialog {
+public class ModuleDialog extends AbstractDialog {
 
     private ModuleDialogView moduleDialogView;
     private Module module;
 
     public ModuleDialog(StackPane parent, Module module) {
-        super(parent, null, JFXDialog.DialogTransition.TOP);
+        super(parent, JFXDialog.DialogTransition.TOP);
         this.module = Objects.requireNonNull(module);
 
         createWidgets();
         setupInteractions();
+
+        setOverlayClose(false);
     }
 
     private void createWidgets() {
