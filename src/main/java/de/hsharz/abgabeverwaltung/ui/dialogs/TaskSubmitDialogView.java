@@ -1,28 +1,29 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
-import com.jfoenix.controls.*;
-import de.hsharz.abgabeverwaltung.Config;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXChipView;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
-import de.hsharz.abgabeverwaltung.submit.BasicMail;
-import de.hsharz.abgabeverwaltung.submit.MailSender;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
-import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
@@ -68,7 +69,7 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
 
         fldRecipient = new JFXTextField(module.getProfessor().getEmail());
         fldRecipient.setLabelFloat(true);
-        fldRecipient.setPromptText("Recipient (Comma separated)");
+        fldRecipient.setPromptText("Recipient(s) (Comma separated)");
 
         fldSubject = new JFXTextField(String.format(submissionTitle, module.getName(), task.getName()));
         if (task.getCustomSubmissionTitle() != null && !task.getCustomSubmissionTitle().trim().isEmpty()) {
@@ -82,7 +83,7 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
             formOfAddress = ",";
         }
 
-        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastname(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
+        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastName(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
         textBody.setLabelFloat(true);
         textBody.setPromptText("Content");
 
@@ -94,7 +95,8 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         ObservableList<String> attachments = FXCollections.observableArrayList(task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
         this.viewAttachments = new ListView<>(attachments);
         viewAttachments.setPrefHeight(150);
-        viewAttachments.setPlaceholder(new Label("No Files attached"));
+        viewAttachments.setPlaceholder(new Label("No Files attached!", ImageLibrary.getImageView("warning.png")));
+        viewAttachments.setStyle("-fx-background-color: -fx-orange");
     }
 
     @Override

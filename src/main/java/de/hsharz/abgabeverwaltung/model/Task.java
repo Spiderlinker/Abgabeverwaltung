@@ -11,7 +11,7 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class Task implements Externalizable {
+public class Task {
 
     private StringProperty name = new SimpleStringProperty("DefaultName");
     private StringProperty description = new SimpleStringProperty();
@@ -19,10 +19,6 @@ public class Task implements Externalizable {
     private StringProperty customSubmissionTitle = new SimpleStringProperty();
     private ObjectProperty<LocalDate> dueDate = new SimpleObjectProperty<>();
     private BooleanProperty isFinished = new SimpleBooleanProperty();
-
-    public Task() {
-        // Used for
-    }
 
     public Task(final String name) {
         this.setName(name);
@@ -137,27 +133,5 @@ public class Task implements Externalizable {
         return "Task{" +
                 "name=" + name +
                 '}';
-    }
-
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(name.get());
-        out.writeUTF(description.getValueSafe());
-        out.writeUTF(customSubmissionTitle.getValueSafe());
-        out.writeObject(dueDate.get());
-        out.writeBoolean(isFinished.get());
-
-        out.writeObject(new ArrayList<>(attachments.get()));
-    }
-
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        name.set(in.readUTF());
-        description.set(in.readUTF());
-        customSubmissionTitle.set(in.readUTF());
-        dueDate.set((LocalDate) in.readObject());
-        isFinished.set(in.readBoolean());
-
-        attachments.addAll((List<File>) in.readObject());
     }
 }

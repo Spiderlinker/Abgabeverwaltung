@@ -32,7 +32,7 @@ public class Settings {
     private static void reloadProperties(Properties properties, File propertiesFile) {
         try {
             if (!propertiesFile.exists()) {
-                Files.copy(Settings.class.getResourceAsStream("/mail/" + propertiesFile.getName()), propertiesFile.toPath());
+                Files.copy(Settings.class.getResourceAsStream("/files/" + propertiesFile.getName()), propertiesFile.toPath());
             }
             try (FileInputStream input = new FileInputStream(propertiesFile)) {
                 properties.load(input);

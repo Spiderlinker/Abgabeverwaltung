@@ -15,14 +15,17 @@
 
 .taskBox:much-time-left {
 	-fx-background-color: -fx-yellow;
+	-fx-text-fill: #342E09;
 }
 
 .taskBox:few-time-left {
 	-fx-background-color: -fx-orange;
+	-fx-text-fill: #342309;
 }
 
 .taskBox:no-time-left {
 	-fx-background-color: -fx-red;
+	-fx-text-fill: #341109;
 }
  
 .title {

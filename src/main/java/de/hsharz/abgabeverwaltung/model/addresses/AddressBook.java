@@ -3,8 +3,8 @@ package de.hsharz.abgabeverwaltung.model.addresses;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.*;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Objects;
 
 public class AddressBook {
 
@@ -25,7 +25,7 @@ public class AddressBook {
         if (!contacts.contains(p)) {
             contacts.add(p);
         }
-        contacts.sort(Comparator.comparing(Person::getLastname));
+        contacts.sort(Comparator.comparing(Person::getLastName));
     }
 
     public static void removeContact(final Person p) {
@@ -34,23 +34,6 @@ public class AddressBook {
 
     public static ObservableList<Person> getContacts() {
         return contacts;
-    }
-
-    public static void readFromFile(File file) throws IOException {
-        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(file))) {
-            try {
-                List<Person> persons = (List<Person>) input.readObject();
-                persons.forEach(AddressBook::addContact);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public static void writeToFile(File file) throws IOException {
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file))) {
-            output.writeObject(new ArrayList<>(AddressBook.getContacts()));
-        }
     }
 
 }

@@ -48,7 +48,7 @@ public class Abgabeverwaltung extends Application {
     private void checkRequiredFiles() {
         if (!Config.ADDRESS_BOOK_FILE.exists()) {
             try {
-                Files.copy(Settings.class.getResourceAsStream("/addressbook/addressbook.db"), Config.ADDRESS_BOOK_FILE.toPath());
+                Files.copy(Settings.class.getResourceAsStream("/files/addressbook.db"), Config.ADDRESS_BOOK_FILE.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }

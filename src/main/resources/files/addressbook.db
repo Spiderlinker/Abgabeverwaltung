@@ -1,0 +1,52 @@
+[
+  {
+    "lastname": "Ackermann",
+    "email": "dackermann@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Drögehorn",
+    "email": "odroegehorn@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Kreyßig",
+    "email": "mkreyssig@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Pundt",
+    "email": "hpundt@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Schade",
+    "email": "tschade@hs-harz.de",
+    "gender": "FEMALE"
+  },
+  {
+    "lastname": "Schneider",
+    "email": "kschneider@hs-harz.de",
+    "gender": "FEMALE"
+  },
+  {
+    "lastname": "Singer",
+    "email": "jsinger@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Stolze",
+    "email": "tstolze@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Strack",
+    "email": "hstrack@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Zimmermann",
+    "email": "bzimmermann@hs-harz.de",
+    "gender": "MALE"
+  }
+]

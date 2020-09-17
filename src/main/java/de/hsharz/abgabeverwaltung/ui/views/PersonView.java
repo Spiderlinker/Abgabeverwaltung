@@ -3,7 +3,6 @@ package de.hsharz.abgabeverwaltung.ui.views;
 import com.jfoenix.controls.JFXButton;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
-import de.hsharz.abgabeverwaltung.ui.dialogs.DialogCache;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
@@ -70,7 +69,7 @@ public class PersonView extends AbstractView<HBox> {
             setMaxWidth(Control.USE_PREF_SIZE);
 
             lblGender.setText(item.getGender().toString());
-            lblName.setText(item.getLastname());
+            lblName.setText(item.getLastName());
             lblEmail.setText(item.getEmail());
             setGraphic(root);
 

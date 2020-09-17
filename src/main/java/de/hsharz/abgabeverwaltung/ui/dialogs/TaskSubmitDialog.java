@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Properties;
 
 public class TaskSubmitDialog extends AbstractDialog {
@@ -55,6 +56,16 @@ public class TaskSubmitDialog extends AbstractDialog {
 
     private void setupInteractions() {
         taskSubmitDialogView.btnSubmit.setOnAction(e -> {
+
+
+
+            boolean sendMail = getConfirmationOfUserToSendMail();
+            if (!sendMail) {
+                return;
+            }
+
+
+            System.out.println("Send mail");
 
             javafx.concurrent.Task<Void> task = new javafx.concurrent.Task<Void>() {
                 @Override
@@ -98,6 +109,20 @@ public class TaskSubmitDialog extends AbstractDialog {
         });
 
         taskSubmitDialogView.btnCancel.setOnAction(e -> close());
+    }
+
+    private boolean getConfirmationOfUserToSendMail() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText("Submit Task?");
+        alert.setContentText("Do you really want to submit this task to " + module.getProfessor().getEmail());
+        alert.getButtonTypes().clear();
+        ButtonType submitButton = new ButtonType("Yes, Submit");
+        ButtonType cancelButton = new ButtonType("No");
+        alert.getButtonTypes().addAll(cancelButton, submitButton);
+        Optional<ButtonType> pressedButton = alert.showAndWait();
+        // If there is no pressed Button or the Button was not the submit button, return false
+        // Only return true if there was a button pressed and this button was the custom submitButton
+        return pressedButton.isPresent() && pressedButton.get().equals(submitButton);
     }
 
     private BasicMail composeMail() {
