@@ -69,7 +69,7 @@ public class PersonView extends AbstractView<HBox> {
             setMaxWidth(Control.USE_PREF_SIZE);
 
             lblGender.setText(item.getGender().toString());
-            lblName.setText(item.getLastName());
+            lblName.setText(item.getLastname());
             lblEmail.setText(item.getEmail());
             setGraphic(root);
 

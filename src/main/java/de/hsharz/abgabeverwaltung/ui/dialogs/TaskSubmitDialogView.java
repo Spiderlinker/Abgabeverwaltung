@@ -83,7 +83,7 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
             formOfAddress = ",";
         }
 
-        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastName(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
+        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastname(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
         textBody.setLabelFloat(true);
         textBody.setPromptText("Content");
 

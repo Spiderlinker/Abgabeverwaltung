@@ -25,7 +25,7 @@ public class AddressBook {
         if (!contacts.contains(p)) {
             contacts.add(p);
         }
-        contacts.sort(Comparator.comparing(Person::getLastName));
+        contacts.sort(Comparator.comparing(Person::getLastname));
     }
 
     public static void removeContact(final Person p) {
