@@ -14,28 +14,27 @@ class ModuleDatabaseTest {
 
     @BeforeEach
     public void setup() {
-        this.objectUnderTest.nameProperty().set(null);
         this.objectUnderTest.getModules().clear();
     }
 
-    @Test
-    void getNameNullFail() {
-        Assertions.assertThrows(NullPointerException.class, () -> this.objectUnderTest.setName(null));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "", "   " })
-    void setNameEmptyFail(final String name) {
-        Assertions.assertThrows(NullPointerException.class, () -> this.objectUnderTest.setName(name));
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "Test", "Semester #1" })
-    void getName(final String name) {
-        Assertions.assertNull(this.objectUnderTest.getName());
-        this.objectUnderTest.setName(name);
-        Assertions.assertEquals(name, this.objectUnderTest.getName());
-    }
+//    @Test
+//    void getNameNullFail() {
+//        Assertions.assertThrows(NullPointerException.class, () -> this.objectUnderTest.setName(null));
+//    }
+//
+//    @ParameterizedTest
+//    @ValueSource(strings = { "", "   " })
+//    void setNameEmptyFail(final String name) {
+//        Assertions.assertThrows(NullPointerException.class, () -> this.objectUnderTest.setName(name));
+//    }
+//
+//    @ParameterizedTest
+//    @ValueSource(strings = { "Test", "Semester #1" })
+//    void getName(final String name) {
+//        Assertions.assertNull(this.objectUnderTest.getName());
+//        this.objectUnderTest.setName(name);
+//        Assertions.assertEquals(name, this.objectUnderTest.getName());
+//    }
 
     @Test
     void getModulesEmpty() {

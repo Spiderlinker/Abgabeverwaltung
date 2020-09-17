@@ -36,7 +36,7 @@ public class PersonView extends AbstractView<HBox> {
         this.lblEmail = new Label();
         this.lblGender = new Label();
 
-        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
+        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash.png"));
         btnDelete.setMinWidth(50);
     }
 

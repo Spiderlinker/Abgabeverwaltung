@@ -1,28 +1,25 @@
 package de.hsharz.abgabeverwaltung.submit;
 
-import javafx.beans.property.ObjectProperty;
-
+import javax.mail.PasswordAuthentication;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
-import javax.mail.PasswordAuthentication;
-
 public class BasicMail {
 
-    private String                 from;
+    private String from;
     private String fromName;
-    private List<String>           recipients    = new ArrayList<>();
-    private List<String>           bccRecipients    = new ArrayList<>();
+    private List<String> recipients = new ArrayList<>();
+    private List<String> bccRecipients = new ArrayList<>();
 
-    private String                 subject;
-    private String                 body;
+    private String subject;
+    private String body;
 
-    private List<File>             attachedFiles = new ArrayList<>();
+    private List<File> attachedFiles = new ArrayList<>();
     private PasswordAuthentication authenticator;
-    private Properties             properties    = new Properties();
+    private Properties properties = new Properties();
 
     public BasicMail() {
 

@@ -52,8 +52,8 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
         lblModule.getStyleClass().add("header-label");
 
         btnAddTask = new JFXButton("Add Task");
-        btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
-        btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit_bold.png"));
+        btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash.png"));
+        btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit.png"));
 
         viewTasks = new ListView<>();
         viewTasks.setOrientation(Orientation.HORIZONTAL);

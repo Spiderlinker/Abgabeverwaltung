@@ -2,6 +2,7 @@ package de.hsharz.abgabeverwaltung.ui.dialogs;
 
 import com.jfoenix.controls.*;
 import de.hsharz.abgabeverwaltung.Config;
+import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
@@ -52,13 +53,13 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
 
     @Override
     protected String getStylesheet() {
-        return "/style/dialog/TaskSubmitDialog.css";
+        return "/style/dialog/DefaultDialog.css";
     }
 
     @Override
     protected void createWidgets() {
         root.getStyleClass().add("root");
-        root.setPrefSize(650, 720);
+        root.setPrefSize(650, 780);
 
         LayoutUtils.setColumnWidths(root, 50, 50);
 
@@ -76,22 +77,23 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         fldSubject.setLabelFloat(true);
         fldSubject.setPromptText("Submission Title / Subject");
 
-        String anrede = module.getProfessor().getGender().toString();
-        if(Gender.DIVERS.equals(module.getProfessor().getGender())){
-            anrede = ",";
+        String formOfAddress = module.getProfessor().getGender().toString();
+        if (Gender.DIVERS.equals(module.getProfessor().getGender())) {
+            formOfAddress = ",";
         }
-        textBody = new JFXTextArea(String.format(body, anrede, module.getProfessor().getLastname(), task.getName(), module.getName(), ""));
+
+        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastname(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
         textBody.setLabelFloat(true);
         textBody.setPromptText("Content");
 
-        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send_bold.png"));
+        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send.png"));
         btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
         btnSubmit.setGraphicTextGap(10);
         btnCancel = new JFXButton("Cancel");
 
         ObservableList<String> attachments = FXCollections.observableArrayList(task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
         this.viewAttachments = new ListView<>(attachments);
-        viewAttachments.setPrefHeight(50);
+        viewAttachments.setPrefHeight(150);
         viewAttachments.setPlaceholder(new Label("No Files attached"));
     }
 

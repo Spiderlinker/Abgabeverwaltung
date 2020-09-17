@@ -3,6 +3,7 @@ package de.hsharz.abgabeverwaltung.ui.dialogs;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
 import de.hsharz.abgabeverwaltung.Config;
+import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.submit.BasicMail;
@@ -12,10 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 
-import javax.mail.Folder;
-import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Store;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,8 +59,10 @@ public class TaskSubmitDialog extends AbstractDialog {
             javafx.concurrent.Task<Void> task = new javafx.concurrent.Task<Void>() {
                 @Override
                 public Void call() throws Exception {
+                    Settings.reloadEmailServerProperties();
+                    Settings.reloadEmailProperties();
                     BasicMail mail = composeMail();
-                    new MailSender().sendMail(mail);
+                    new MailSender(mail).sendMailAndStoreInSentFolder();
                     storeMailInSentFolder();
                     return null;
                 }
@@ -81,7 +81,7 @@ public class TaskSubmitDialog extends AbstractDialog {
 
                 String message = "Failed to send your message!";
 
-                if(task.getException() instanceof MessagingException){
+                if (task.getException() instanceof MessagingException) {
                     message = "Could not send message. Please check your username and password!";
                 } else if (task.getException() instanceof UnsupportedEncodingException) {
                     message = "Invalid character on your Name. Please remove them!";
@@ -109,30 +109,16 @@ public class TaskSubmitDialog extends AbstractDialog {
         mail.getAttachedFiles().addAll(task.getAttachments());
         mail.setSubject(taskSubmitDialogView.fldSubject.getText());
         mail.setBody(taskSubmitDialogView.textBody.getText());
-        Properties userProperties = new Properties();
 
-        try (FileInputStream input = new FileInputStream(Config.EMAIL_CONFIGURATION_FILE)) {
-            userProperties.load(input);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        mail.setFrom(Settings.getEmailSettings().getProperty("mail.username"), Settings.getEmailSettings().getProperty("user.name"));
+
+        mail.setUsernamePassword(Settings.getEmailSettings().getProperty("mail.username"), Settings.getEmailSettings().getProperty("mail.password"));
+        if (Boolean.parseBoolean(Settings.getEmailSettings().getProperty("mail.bcc"))) {
+            mail.addBCCRecipient(Settings.getEmailSettings().getProperty("mail.username"));
         }
 
-        mail.setFrom(userProperties.getProperty("mail.username"), userProperties.getProperty("user.name"));
+        mail.getProperties().putAll(Settings.getEmailServerSettings());
 
-        mail.setUsernamePassword(userProperties.getProperty("mail.username"), userProperties.getProperty("mail.password"));
-        if (Boolean.parseBoolean(userProperties.getProperty("mail.bcc"))) {
-            mail.addBCCRecipient(userProperties.getProperty("mail.username"));
-        }
-
-        try (FileInputStream input = new FileInputStream(Config.EMAIL_SERVER_CONFIGURATION_FILE)) {
-            mail.getProperties().load(input);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
         return mail;
     }
 

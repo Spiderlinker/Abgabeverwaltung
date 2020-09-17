@@ -22,11 +22,12 @@ import java.util.Objects;
 
 public class TaskDialogView extends AbstractStyledView<GridPane> {
 
-    protected TextField fldTitle;
-    protected TextField fldCustomSubject;
-    protected DatePicker dueDate;
+    private Label lblTitle;
+    protected JFXTextField fldTitle;
+    protected JFXTextField fldCustomSubject;
+    protected JFXDatePicker dueDate;
 
-    protected TextArea textDescription;
+    protected JFXTextArea textDescription;
 
     private ListView<File> viewAttachments;
 
@@ -44,7 +45,7 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
 
     @Override
     protected String getStylesheet() {
-        return "/style/dialog/ModuleDialog.css";
+        return "/style/dialog/DefaultDialog.css";
     }
 
     @Override
@@ -53,17 +54,22 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
 
         LayoutUtils.setColumnWidths(root, 70, 30);
 
+        lblTitle = new Label("Edit Task");
+        lblTitle.getStyleClass().add("title");
+
         this.fldTitle = new JFXTextField();
         fldTitle.textProperty().bindBidirectional(task.nameProperty());
-        this.fldTitle.setPromptText("Name der Aufgabe");
+        this.fldTitle.setPromptText("Name of this Task");
+        fldTitle.setLabelFloat(true);
 
         this.fldCustomSubject = new JFXTextField();
         fldCustomSubject.textProperty().bindBidirectional(task.customSubmissionTitleProperty());
-        this.fldCustomSubject.setPromptText("Einreichungstitel / Betreff");
+        this.fldCustomSubject.setPromptText("Custom Submission Title / Subject");
+        fldCustomSubject.setLabelFloat(true);
 
         this.dueDate = new JFXDatePicker();
         dueDate.valueProperty().bindBidirectional(task.dueDateProperty());
-        this.dueDate.setPromptText("Abgabedatum");
+        this.dueDate.setPromptText("Submission Date");
         if (this.task.getDueDate() != null) {
             this.dueDate.setValue(this.task.getDueDate());
         }
@@ -71,13 +77,15 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
         this.textDescription = new JFXTextArea();
         textDescription.textProperty().bindBidirectional(task.descriptionProperty());
         this.textDescription.setPromptText("Description of this task...");
+        textDescription.setLabelFloat(true);
+        textDescription.setPrefHeight(150);
 
         this.viewAttachments = new ListView<>(task.getAttachments());
         this.viewAttachments.setCellFactory(param -> new AttachmentView(task).newListCell());
         viewAttachments.setPrefHeight(120);
         viewAttachments.setPlaceholder(new Label("Drag&Drop files here to attach to this task"));
 
-        this.btnDelete = new JFXButton("Delete Task", ImageLibrary.getImageView("trash_bold.png"));
+        this.btnDelete = new JFXButton("Delete Task", ImageLibrary.getImageView("trash.png"));
 
         this.btnSave = new JFXButton("Save & Close");
         btnSave.disableProperty().bind(task.nameProperty().isEmpty());
@@ -117,15 +125,19 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
 
     @Override
     protected void addWidgets() {
-        this.root.add(this.fldTitle, 0, 0);
-        this.root.add(this.dueDate, 1, 0);
-        this.root.add(this.fldCustomSubject, 0, 1);
+        this.root.add(this.lblTitle, 0, 0, 2, 1);
 
-        this.root.add(this.textDescription, 0, 2, 2, 1);
-        this.root.add(this.viewAttachments, 0, 3, 2, 1);
+        this.root.add(this.fldTitle, 0, 1);
+        this.root.add(this.dueDate, 1, 2);
+        this.root.add(this.fldCustomSubject, 0, 2);
 
-        this.root.add(this.btnDelete, 0, 4);
-        this.root.add(this.btnSave, 1, 4);
+        this.root.add(this.textDescription, 0, 3, 2, 1);
+        this.root.add(this.viewAttachments, 0, 4, 2, 1);
+
+        this.root.add(this.btnDelete, 0, 5);
+        this.root.add(this.btnSave, 1, 5);
+
+        GridPane.setHalignment(this.lblTitle, HPos.CENTER);
 
         GridPane.setHgrow(this.fldTitle, Priority.ALWAYS);
         GridPane.setHalignment(this.dueDate, HPos.RIGHT);

@@ -38,7 +38,7 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
 
     @Override
     protected String getStylesheet() {
-        return "/style/dialog/SettingsDialog.css";
+        return "/style/dialog/DefaultDialog.css";
     }
 
     @Override
@@ -73,9 +73,6 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
     protected void setupInteractions() {
         btnOpenConfigurationFile.setOnAction(e -> {
             try {
-                if (!Config.EMAIL_SERVER_CONFIGURATION_FILE.exists()) {
-                    Files.copy(getClass().getResourceAsStream("/mail/email_server.configuration"), Config.EMAIL_SERVER_CONFIGURATION_FILE.toPath());
-                }
                 Desktop.getDesktop().open(Config.EMAIL_SERVER_CONFIGURATION_FILE);
             } catch (IOException ex) {
                 ex.printStackTrace();

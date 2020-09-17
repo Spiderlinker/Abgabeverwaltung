@@ -35,7 +35,7 @@ public class AttachmentView extends AbstractView<HBox> {
         this.lblPath = new Label();
         this.lblPath.setTextOverrun(OverrunStyle.LEADING_WORD_ELLIPSIS);
 
-        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
+        this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash.png"));
         btnDelete.setMinWidth(50);
     }
 

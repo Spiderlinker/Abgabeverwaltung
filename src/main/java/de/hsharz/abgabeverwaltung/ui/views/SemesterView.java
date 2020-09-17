@@ -51,11 +51,11 @@ public class SemesterView extends AbstractStyledView<StackPane> {
         boxTop = new HBox(20);
         boxTop.getStyleClass().add("boxTop");
 
-        btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book_bold.png"));
+        btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book.png"));
         btnManageProfs.setAlignment(Pos.CENTER_LEFT);
-        btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings_bold.png"));
+        btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings.png"));
         btnSettings.setAlignment(Pos.CENTER_LEFT);
-        this.btnAddModule = new JFXButton("Modul hinzufügen");
+        this.btnAddModule = new JFXButton("Add new module");
 
         viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
         viewModules.setCellFactory(param -> new ModuleView(root).newListCell());

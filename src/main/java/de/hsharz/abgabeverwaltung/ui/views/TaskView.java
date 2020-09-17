@@ -81,14 +81,14 @@ public class TaskView extends AbstractStyledView<StackPane> {
         tooltipTitle.textProperty().bind(lblTitle.textProperty());
         lblTitle.setTooltip(tooltipTitle);
 
-        this.lblDueDate = new Label("", ImageLibrary.getImageView("calendar_bold.png"));
+        this.lblDueDate = new Label("", ImageLibrary.getImageView("calendar.png"));
 
-        this.lblAttachments = new Label("", ImageLibrary.getImageView("attachments_bold.png"));
+        this.lblAttachments = new Label("", ImageLibrary.getImageView("attachments.png"));
 
         boxButton = new HBox(10);
-        this.btnSubmit = new JFXButton("Review & Submit", ImageLibrary.getImageView("check_next_bold.png"));
-        btnRedo = new JFXButton("Re-Open", ImageLibrary.getImageView("repeat_bold.png"));
-        btnDelete = new JFXButton("", ImageLibrary.getImageView("trash_bold.png"));
+        this.btnSubmit = new JFXButton("Review & Submit", ImageLibrary.getImageView("check_next.png"));
+        btnRedo = new JFXButton("Re-Open", ImageLibrary.getImageView("repeat.png"));
+        btnDelete = new JFXButton("", ImageLibrary.getImageView("trash.png"));
 
         this.dragPane = new BorderPane();
         this.dragPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
@@ -208,7 +208,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
 
         private void setupButtonsAndColoring() {
             if (task.isFinished()) {
-                lblTitle.setGraphic(ImageLibrary.getImageView("finished_bold.png"));
+                lblTitle.setGraphic(ImageLibrary.getImageView("finished.png"));
                 boxButton.getChildren().addAll(btnDelete, btnRedo);
                 taskBox.pseudoClassStateChanged(finished, true);
             } else {

@@ -62,7 +62,7 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
         fldEmail.setPromptText("E-Mail-Address");
         fldEmail.setLabelFloat(true);
 
-        btnAdd = new JFXButton("Add", ImageLibrary.getImageView("add_contact_bold.png"));
+        btnAdd = new JFXButton("Add", ImageLibrary.getImageView("add_contact.png"));
         btnAdd.setDefaultButton(true);
         btnClose = new JFXButton("Close");
 
