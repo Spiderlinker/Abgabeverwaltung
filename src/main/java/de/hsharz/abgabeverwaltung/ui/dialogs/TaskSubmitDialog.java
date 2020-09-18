@@ -2,7 +2,6 @@ package de.hsharz.abgabeverwaltung.ui.dialogs;
 
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
-import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -13,14 +12,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 
-import javax.mail.MessagingException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Properties;
 
 public class TaskSubmitDialog extends AbstractDialog {
 
@@ -58,7 +51,6 @@ public class TaskSubmitDialog extends AbstractDialog {
         taskSubmitDialogView.btnSubmit.setOnAction(e -> {
 
 
-
             boolean sendMail = getConfirmationOfUserToSendMail();
             if (!sendMail) {
                 return;
@@ -67,14 +59,16 @@ public class TaskSubmitDialog extends AbstractDialog {
 
             System.out.println("Send mail");
 
+            final MailSender[] mailSender = new MailSender[1];
+
             javafx.concurrent.Task<Void> task = new javafx.concurrent.Task<Void>() {
                 @Override
                 public Void call() throws Exception {
                     Settings.reloadEmailServerProperties();
                     Settings.reloadEmailProperties();
                     BasicMail mail = composeMail();
-                    new MailSender(mail).sendMailAndStoreInSentFolder();
-                    storeMailInSentFolder();
+                    mailSender[0] = new MailSender(mail);
+                    mailSender[0].sendMailAndStoreInSentFolder();
                     return null;
                 }
             };
@@ -90,13 +84,13 @@ public class TaskSubmitDialog extends AbstractDialog {
                 progressBar.setVisible(false);
                 setDisabled(false);
 
-                String message = "Failed to send your message!";
+                String message = task.getException().getMessage();
 
-                if (task.getException() instanceof MessagingException) {
-                    message = "Could not send message. Please check your username and password!";
-                } else if (task.getException() instanceof UnsupportedEncodingException) {
-                    message = "Invalid character on your Name. Please remove them!";
-                }
+//                if (task.getException() instanceof MessagingException) {
+//                    message = "Could not send message. Please check your username and password!";
+//                } else if (task.getException() instanceof UnsupportedEncodingException) {
+//                    message = "Invalid character on your Name. Please remove them!";
+//                }
                 new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE).showAndWait();
             });
 
@@ -145,10 +139,6 @@ public class TaskSubmitDialog extends AbstractDialog {
         mail.getProperties().putAll(Settings.getEmailServerSettings());
 
         return mail;
-    }
-
-    private void storeMailInSentFolder() {
-
     }
 
 }

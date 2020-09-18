@@ -1,14 +1,12 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXChipView;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
-import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
@@ -34,7 +32,6 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
     private Label lblTitle;
     protected JFXTextField fldSubject;
     protected JFXTextField fldRecipient;
-    protected JFXChipView<Person> recipients;
     protected JFXTextArea textBody;
     protected ListView<String> viewAttachments;
 

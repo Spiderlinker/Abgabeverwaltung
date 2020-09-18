@@ -6,8 +6,8 @@ import java.util.Properties;
 
 public class Settings {
 
-    private static Properties emailSettings = new Properties();
-    private static Properties emailServerSettings = new Properties();
+    private static final Properties emailSettings = new Properties();
+    private static final Properties emailServerSettings = new Properties();
 
     private Settings() {
         // Utility class

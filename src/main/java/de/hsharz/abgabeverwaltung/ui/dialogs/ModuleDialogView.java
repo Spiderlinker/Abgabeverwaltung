@@ -1,25 +1,17 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.skins.JFXChipViewSkin;
 import de.hsharz.abgabeverwaltung.model.Module;
-import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.beans.binding.Bindings;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.HPos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
-import org.controlsfx.control.SearchableComboBox;
-import org.controlsfx.control.spreadsheet.Grid;
 
-import java.util.Comparator;
 import java.util.Objects;
 
 public class ModuleDialogView extends AbstractStyledView<GridPane> {

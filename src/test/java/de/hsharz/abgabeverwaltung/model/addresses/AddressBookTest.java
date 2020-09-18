@@ -3,10 +3,6 @@ package de.hsharz.abgabeverwaltung.model.addresses;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
-import java.io.File;
-import java.io.IOException;
 
 class AddressBookTest {
 

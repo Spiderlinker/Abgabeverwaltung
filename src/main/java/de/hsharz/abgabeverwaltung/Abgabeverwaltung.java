@@ -17,7 +17,7 @@ import java.nio.file.Files;
 
 public class Abgabeverwaltung extends Application {
 
-    private static Gson gson = FxGson.coreBuilder().setPrettyPrinting().create();
+    private static final Gson gson = FxGson.coreBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) {
         launch(args);

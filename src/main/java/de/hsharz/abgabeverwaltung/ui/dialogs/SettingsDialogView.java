@@ -14,7 +14,6 @@ import javafx.scene.layout.GridPane;
 
 import java.awt.*;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Properties;
 
 public class SettingsDialogView extends AbstractStyledView<GridPane> {

@@ -1,15 +1,8 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
-import com.jfoenix.controls.JFXDialog;
-import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.spiderlinker.utils.StringUtils;
 import javafx.scene.layout.StackPane;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class SettingsDialog extends AbstractDialog {
 

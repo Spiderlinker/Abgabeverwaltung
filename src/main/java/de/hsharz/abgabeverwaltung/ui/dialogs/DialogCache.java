@@ -24,7 +24,7 @@ public class DialogCache {
     }
 
     public enum DialogType {
-        TASK_VIEW, TASK_SUBMIT, MODULE_VIEW, SETTINGS, ADDRESS_BOOK;
+        TASK_VIEW, TASK_SUBMIT, MODULE_VIEW, SETTINGS, ADDRESS_BOOK
     }
 
 }

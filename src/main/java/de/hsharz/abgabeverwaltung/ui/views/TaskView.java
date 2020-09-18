@@ -2,7 +2,6 @@ package de.hsharz.abgabeverwaltung.ui.views;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Arrays;
 
 import com.jfoenix.controls.JFXButton;
 
@@ -109,9 +108,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
 
         this.root.setOnMouseClicked(e -> new TaskDialog(parent, module.get(), task).show());
 
-        btnSubmit.setOnAction(e -> {
-            new TaskSubmitDialog(parent, module.get(), task).show();
-        });
+        btnSubmit.setOnAction(e -> new TaskSubmitDialog(parent, module.get(), task).show());
         btnRedo.setOnAction(e -> task.setFinished(false));
         btnDelete.setOnAction(e -> module.get().removeTask(task));
 
