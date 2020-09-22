@@ -41,3 +41,13 @@
 .list-cell:hover {
 	-fx-text-fill: -fx-background-dark;
 }
+
+.save-button {
+	-jfx-button-type: RAISED;
+	-fx-background-color: -fx-background-dark;
+	-fx-text-fill: white;
+}
+
+.cancel-button {
+	-jfx-button-type: FLAT;
+}

@@ -8,35 +8,36 @@ public class SettingsDialog extends AbstractDialog {
 
     private SettingsDialogView settingsDialogView;
 
-    public SettingsDialog(StackPane parent) {
+    public SettingsDialog(final StackPane parent) {
         super(parent, DialogTransition.TOP);
 
-        createWidgets();
-        setupInteractions();
-        enableCloseOnEscape();
-        loadConfiguration();
+        this.createWidgets();
+        this.setupInteractions();
+        this.enableCloseOnEscape();
+        this.loadConfiguration();
     }
 
     private void createWidgets() {
-        settingsDialogView = new SettingsDialogView();
-        setContent(settingsDialogView.getPane());
+        this.settingsDialogView = new SettingsDialogView();
+        this.setContent(this.settingsDialogView.getPane());
     }
 
     private void setupInteractions() {
-        settingsDialogView.btnCancel.setOnAction(e -> close());
+        this.settingsDialogView.btnCancel.setOnAction(e -> this.close());
 
-        settingsDialogView.btnSave.setOnAction(e -> {
-            Settings.getEmailSettings().put("mail.from", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldName.getText(), ""));
-            Settings.getEmailSettings().put("mail.username", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldEmail.getText(), ""));
-            Settings.getEmailSettings().put("mail.password", StringUtils.requireNonNullOrEmptyElse(settingsDialogView.fldPassword.getText(), ""));
-            Settings.getEmailSettings().put("mail.bcc", String.valueOf(settingsDialogView.boxSendBccToMyself.isSelected()));
+        this.settingsDialogView.btnSave.setOnAction(e -> {
+            Settings.getEmailSettings().put("mail.from", StringUtils.requireNonNullOrEmptyElse(this.settingsDialogView.fldName.getText(), ""));
+            Settings.getEmailSettings().put("mail.username", StringUtils.requireNonNullOrEmptyElse(this.settingsDialogView.fldEmail.getText(), ""));
+            Settings.getEmailSettings().put("mail.password",
+                    StringUtils.requireNonNullOrEmptyElse(this.settingsDialogView.fldPassword.getText(), ""));
+            Settings.getEmailSettings().put("mail.bcc", String.valueOf(this.settingsDialogView.boxSendBccToMyself.isSelected()));
             Settings.saveEmailProperties();
-            close();
+            this.close();
         });
     }
 
     private void loadConfiguration() {
-        settingsDialogView.updateConfigurationSettings(Settings.getEmailSettings());
+        this.settingsDialogView.updateConfigurationSettings(Settings.getEmailSettings());
     }
 
 }

@@ -1,31 +1,32 @@
 package de.hsharz.abgabeverwaltung.submit;
 
-import javax.mail.PasswordAuthentication;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
+import javax.mail.PasswordAuthentication;
+
 public class BasicMail {
 
-    private String from;
-    private String fromName;
-    private List<String> recipients = new ArrayList<>();
-    private List<String> bccRecipients = new ArrayList<>();
+    private String                 from;
+    private String                 fromName;
+    private List<String>           recipients    = new ArrayList<>();
+    private List<String>           bccRecipients = new ArrayList<>();
 
-    private String subject;
-    private String body;
+    private String                 subject;
+    private String                 body;
 
-    private List<File> attachedFiles = new ArrayList<>();
+    private List<File>             attachedFiles = new ArrayList<>();
     private PasswordAuthentication authenticator;
-    private Properties properties = new Properties();
+    private Properties             properties    = new Properties();
 
     public BasicMail() {
 
     }
 
-    public void setFrom(final String from, String name) {
+    public void setFrom(final String from, final String name) {
         this.from = from;
         this.fromName = name;
     }
@@ -35,7 +36,7 @@ public class BasicMail {
     }
 
     public String getFromName() {
-        return fromName;
+        return this.fromName;
     }
 
     public Properties getProperties() {
@@ -54,7 +55,7 @@ public class BasicMail {
         return this.recipients;
     }
 
-    public void addBCCRecipient(String... bcc) {
+    public void addBCCRecipient(final String... bcc) {
         Objects.requireNonNull(bcc);
         for (String r : bcc) {
             Objects.requireNonNull(r);
@@ -63,7 +64,7 @@ public class BasicMail {
     }
 
     public List<String> getBCCRecipients() {
-        return bccRecipients;
+        return this.bccRecipients;
     }
 
     public void setSubject(final String subject) {

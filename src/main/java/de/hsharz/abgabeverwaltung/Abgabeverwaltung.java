@@ -1,6 +1,15 @@
 package de.hsharz.abgabeverwaltung;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import org.hildan.fxgson.FxGson;
+
 import com.google.gson.Gson;
+
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
@@ -10,31 +19,27 @@ import de.hsharz.abgabeverwaltung.ui.views.SemesterView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.hildan.fxgson.FxGson;
-
-import java.io.*;
-import java.nio.file.Files;
 
 public class Abgabeverwaltung extends Application {
 
     private static final Gson gson = FxGson.coreBuilder().setPrettyPrinting().create();
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(final Stage stage) throws Exception {
 
         boolean firstStartup = !Config.APPLICATION_FOLDER.exists();
 
-        checkApplicationDirectory();
-        checkRequiredFiles();
+        this.checkApplicationDirectory();
+        this.checkRequiredFiles();
 
-        loadConfigurationFiles();
-        loadApplicationState();
+        this.loadConfigurationFiles();
+        this.loadApplicationState();
 
-        createUiAndShow(stage);
+        this.createUiAndShow(stage);
 
         if (firstStartup) {
             DialogCache.getDialog(DialogCache.DialogType.SETTINGS).show();
@@ -49,6 +54,14 @@ public class Abgabeverwaltung extends Application {
         if (!Config.ADDRESS_BOOK_FILE.exists()) {
             try {
                 Files.copy(Settings.class.getResourceAsStream("/files/addressbook.db"), Config.ADDRESS_BOOK_FILE.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!Config.EMAIL_TEMPLATE_FILE.exists()) {
+            try {
+                Files.copy(Settings.class.getResourceAsStream("/files/email_template.txt"), Config.EMAIL_TEMPLATE_FILE.toPath());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -71,7 +84,8 @@ public class Abgabeverwaltung extends Application {
             ModuleDatabase.getInstance().addModules(modules);
         }
     }
-    private static <T> T readFromFile(File file, Class<T> type) {
+
+    private static <T> T readFromFile(final File file, final Class<T> type) {
         if (file.exists()) {
             try (FileReader reader = new FileReader(file)) {
                 return gson.fromJson(reader, type);
@@ -87,7 +101,7 @@ public class Abgabeverwaltung extends Application {
         writeToFile(Config.MODULES_FILE, ModuleDatabase.getInstance().getModules());
     }
 
-    private static void writeToFile(File file, Object content) {
+    private static void writeToFile(final File file, final Object content) {
         try (FileWriter writer = new FileWriter(file)) {
             gson.toJson(content, writer);
         } catch (IOException e) {
@@ -95,7 +109,7 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
-    private void createUiAndShow(Stage stage) {
+    private void createUiAndShow(final Stage stage) {
         Scene scene = new Scene(new SemesterView().getPane(), 1400, 850);
         scene.getStylesheets().add(this.getClass().getResource("/style/Application.css").toExternalForm());
         stage.setScene(scene);
@@ -104,6 +118,5 @@ public class Abgabeverwaltung extends Application {
         stage.setTitle("Abgabeverwaltung");
         stage.show();
     }
-
 
 }

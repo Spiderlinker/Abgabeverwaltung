@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Repository Settings -->
-		<server.url>http://192.168.1.144</server.url>
+		<server.url>http://spiderlinker.duckdns.org</server.url>
 		<repository.url>${server.url}:8090/repository/</repository.url>
 		<repository.url.snapshots>${repository.url}snapshots/</repository.url.snapshots>
 		<repository.url.releases>${repository.url}releases/</repository.url.releases>

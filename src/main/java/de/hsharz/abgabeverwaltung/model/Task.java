@@ -1,22 +1,28 @@
 package de.hsharz.abgabeverwaltung.model;
 
-import java.io.*;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 
-import javafx.beans.property.*;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Task {
 
-    private StringProperty name = new SimpleStringProperty("DefaultName");
-    private StringProperty description = new SimpleStringProperty();
-    private SimpleListProperty<File> attachments = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private StringProperty customSubmissionTitle = new SimpleStringProperty();
-    private ObjectProperty<LocalDate> dueDate = new SimpleObjectProperty<>();
-    private BooleanProperty isFinished = new SimpleBooleanProperty();
+    private StringProperty            name                  = new SimpleStringProperty("DefaultName");
+    private StringProperty            description           = new SimpleStringProperty();
+    private SimpleListProperty<File>  attachments           = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private StringProperty            customSubmissionTitle = new SimpleStringProperty();
+    private ObjectProperty<LocalDate> dueDate               = new SimpleObjectProperty<>();
+    private BooleanProperty           isFinished            = new SimpleBooleanProperty();
 
     public Task(final String name) {
         this.setName(name);
@@ -37,19 +43,19 @@ public class Task {
     public void addAttachments(final File... attachments) {
         Objects.requireNonNull(attachments);
         for (File attachment : attachments) {
-            addAttachment(attachment);
+            this.addAttachment(attachment);
         }
     }
 
-    private void addAttachment(File attachment) {
+    private void addAttachment(final File attachment) {
         Objects.requireNonNull(attachment);
-        if (!attachments.contains(attachment)) {
+        if (!this.attachments.contains(attachment)) {
             this.attachments.add(attachment);
         }
     }
 
-    public void removeAttachment(File attachment) {
-        attachments.remove(attachment);
+    public void removeAttachment(final File attachment) {
+        this.attachments.remove(attachment);
     }
 
     public ObservableList<File> getAttachments() {
@@ -57,7 +63,7 @@ public class Task {
     }
 
     public SimpleListProperty<File> attachmentsProperty() {
-        return attachments;
+        return this.attachments;
     }
 
     public void setCustomSubmissionTitle(final String customSubmissionTitle) {
@@ -81,7 +87,7 @@ public class Task {
     }
 
     public StringProperty descriptionProperty() {
-        return description;
+        return this.description;
     }
 
     public void setDueDate(final LocalDate dueDate) {
@@ -93,7 +99,7 @@ public class Task {
     }
 
     public ObjectProperty<LocalDate> dueDateProperty() {
-        return dueDate;
+        return this.dueDate;
     }
 
     public void setFinished(final boolean isFinished) {
@@ -109,27 +115,27 @@ public class Task {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
         Task task = (Task) o;
-        return name.get().equals(task.name.get()) &&
-                description.getValueSafe().equals(task.description.getValueSafe()) &&
-                customSubmissionTitle.getValueSafe().equals(task.customSubmissionTitle.getValueSafe()) &&
-                new HashSet<>(attachments.get()).equals(new HashSet<>(task.attachments.get())) &&
-                Objects.equals(dueDate.get(), task.dueDate.get()) &&
-                Objects.equals(isFinished.get(), task.isFinished.get());
+        return this.name.get().equals(task.name.get()) && this.description.getValueSafe().equals(task.description.getValueSafe())
+                && this.customSubmissionTitle.getValueSafe().equals(task.customSubmissionTitle.getValueSafe())
+                && new HashSet<>(this.attachments.get()).equals(new HashSet<>(task.attachments.get()))
+                && Objects.equals(this.dueDate.get(), task.dueDate.get()) && Objects.equals(this.isFinished.get(), task.isFinished.get());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, attachments, customSubmissionTitle, dueDate, isFinished);
+        return Objects.hash(this.name, this.description, this.attachments, this.customSubmissionTitle, this.dueDate, this.isFinished);
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "name=" + name +
-                '}';
+        return "Task{" + "name=" + this.name + '}';
     }
 }

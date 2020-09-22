@@ -1,6 +1,7 @@
 package de.hsharz.abgabeverwaltung.ui.views;
 
 import com.jfoenix.controls.JFXButton;
+
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.ui.dialogs.DialogCache;
@@ -12,25 +13,28 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class SemesterView extends AbstractStyledView<StackPane> {
 
-    private VBox mainPane;
-    private HBox boxTop;
+    private VBox             mainPane;
+    private HBox             boxTop;
 
-    private Label lblTitle;
-    private Button btnAddModule;
-    private Button btnManageProfs;
-    private Button btnSettings;
+    private Label            lblTitle;
+    private Button           btnAddModule;
+    private Button           btnManageProfs;
+    private Button           btnSettings;
 
     private ListView<Module> viewModules;
 
     public SemesterView() {
         super(new StackPane());
 
-        initializeView();
-        DialogCache.init(root);
+        this.initializeView();
+        DialogCache.init(this.root);
     }
 
     @Override
@@ -41,23 +45,23 @@ public class SemesterView extends AbstractStyledView<StackPane> {
     @Override
     protected void createWidgets() {
         this.mainPane = new VBox();
-        mainPane.getStyleClass().add("mainPane");
+        this.mainPane.getStyleClass().add("mainPane");
 
-        lblTitle = new Label("Task Manage & Submission System");
-        lblTitle.getStyleClass().add("labelTitle");
+        this.lblTitle = new Label("Task Manage & Submission System");
+        this.lblTitle.getStyleClass().add("labelTitle");
 
-        boxTop = new HBox(20);
-        boxTop.getStyleClass().add("boxTop");
+        this.boxTop = new HBox(20);
+        this.boxTop.getStyleClass().add("boxTop");
 
-        btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book.png"));
-        btnManageProfs.setAlignment(Pos.CENTER_LEFT);
-        btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings.png"));
-        btnSettings.setAlignment(Pos.CENTER_LEFT);
+        this.btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book.png"));
+        this.btnManageProfs.setAlignment(Pos.CENTER_LEFT);
+        this.btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings.png"));
+        this.btnSettings.setAlignment(Pos.CENTER_LEFT);
         this.btnAddModule = new JFXButton("Add new module");
 
-        viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
-        viewModules.setCellFactory(param -> new ModuleView(root).newListCell());
-        viewModules.setPlaceholder(new Label("Click 'Create Module' to create your first Module"));
+        this.viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
+        this.viewModules.setCellFactory(param -> new ModuleView(this.root).newListCell());
+        this.viewModules.setPlaceholder(new Label("Click 'Create Module' to create your first Module"));
 
     }
 
@@ -67,12 +71,12 @@ public class SemesterView extends AbstractStyledView<StackPane> {
 
             Module module = new Module("New Module...");
             ModuleDatabase.getInstance().addModule(module);
-            new ModuleDialog(root, module).show();
+            new ModuleDialog(this.root, module).show();
         });
 
-        btnManageProfs.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.ADDRESS_BOOK).show());
+        this.btnManageProfs.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.ADDRESS_BOOK).show());
 
-        btnSettings.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.SETTINGS).show());
+        this.btnSettings.setOnAction(e -> DialogCache.getDialog(DialogCache.DialogType.SETTINGS).show());
     }
 
     @Override
@@ -80,14 +84,14 @@ public class SemesterView extends AbstractStyledView<StackPane> {
 
         this.root.getChildren().add(this.mainPane);
 
-        boxTop.getChildren().addAll(btnAddModule, LayoutUtils.getHSpacer(), btnManageProfs, btnSettings);
-        HBox.setHgrow(btnAddModule, Priority.SOMETIMES);
+        this.boxTop.getChildren().addAll(this.btnAddModule, LayoutUtils.getHSpacer(), this.btnManageProfs, this.btnSettings);
+        HBox.setHgrow(this.btnAddModule, Priority.SOMETIMES);
 
-        this.mainPane.getChildren().add(lblTitle);
-        this.mainPane.getChildren().add(boxTop);
-        this.mainPane.getChildren().add(viewModules);
+        this.mainPane.getChildren().add(this.lblTitle);
+        this.mainPane.getChildren().add(this.boxTop);
+        this.mainPane.getChildren().add(this.viewModules);
 
-        VBox.setVgrow(viewModules, Priority.ALWAYS);
+        VBox.setVgrow(this.viewModules, Priority.ALWAYS);
     }
 
 }

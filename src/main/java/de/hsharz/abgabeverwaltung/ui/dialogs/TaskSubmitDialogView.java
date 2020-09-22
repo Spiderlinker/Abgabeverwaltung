@@ -1,8 +1,19 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+
+import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -20,33 +31,31 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
-import java.io.File;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
 
-    private String submissionTitle = "%s - Abgabe %s";
-    private String body = "Hallo %s %s, \n\nim Anhang finden Sie meine Abgabe für die Aufgabe '%s' in dem Modul '%s'. \n\n\nMit freundlichen Grüßen\n%s";
+    private Map<String, String> stringReplacer  = new HashMap<>();
 
-    private Label lblTitle;
-    protected JFXTextField fldSubject;
-    protected JFXTextField fldRecipient;
-    protected JFXTextArea textBody;
-    protected ListView<String> viewAttachments;
+    private String              submissionTitle = "%s - Abgabe %s";
 
-    protected Button btnSubmit;
-    protected Button btnCancel;
+    private Label               lblTitle;
+    protected JFXTextField      fldSubject;
+    protected JFXTextField      fldRecipient;
+    protected JFXTextArea       textBody;
+    protected ListView<String>  viewAttachments;
 
-    private Module module;
-    private Task task;
+    protected Button            btnSubmit;
+    protected Button            btnCancel;
 
-    public TaskSubmitDialogView(Module module, Task task) {
+    private Module              module;
+    private Task                task;
+
+    public TaskSubmitDialogView(final Module module, final Task task) {
         super(new GridPane());
         this.task = Objects.requireNonNull(task);
         this.module = Objects.requireNonNull(module);
+        this.initializeStringReplacer();
 
-        initializeView();
+        this.initializeView();
     }
 
     @Override
@@ -54,67 +63,92 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         return "/style/dialog/DefaultDialog.css";
     }
 
+    private void initializeStringReplacer() {
+        String formOfAddress;
+        if (Gender.DIVERS.equals(this.module.getProfessor().getGender())) {
+            formOfAddress = ",";
+        } else {
+            formOfAddress = " " + this.module.getProfessor().getGender().toString();
+        }
+
+        this.stringReplacer.put("[FORM_OF_ADDRESS]", formOfAddress);
+        this.stringReplacer.put("[PROF_NAME]", this.module.getProfessor().getLastname());
+        this.stringReplacer.put("[TASK_NAME]", this.task.getName());
+        this.stringReplacer.put("[MODULE_NAME]", this.module.getName());
+        this.stringReplacer.put("[USER_FULL_NAME]", Settings.getEmailSettings().getProperty("mail.from"));
+    }
+
     @Override
     protected void createWidgets() {
-        root.getStyleClass().add("root");
-        root.setPrefSize(650, 780);
+        this.root.getStyleClass().add("root");
+        this.root.setPrefSize(650, 780);
 
-        LayoutUtils.setColumnWidths(root, 50, 50);
+        LayoutUtils.setColumnWidths(this.root, 50, 50);
 
-        lblTitle = new Label("Submit Task");
-        lblTitle.getStyleClass().add("title");
+        this.lblTitle = new Label("Submit Task");
+        this.lblTitle.getStyleClass().add("title");
 
-        fldRecipient = new JFXTextField(module.getProfessor().getEmail());
-        fldRecipient.setLabelFloat(true);
-        fldRecipient.setPromptText("Recipient(s) (Comma separated)");
+        this.fldRecipient = new JFXTextField(this.module.getProfessor().getEmail());
+        this.fldRecipient.setLabelFloat(true);
+        this.fldRecipient.setPromptText("Recipient(s) (Comma separated)");
 
-        fldSubject = new JFXTextField(String.format(submissionTitle, module.getName(), task.getName()));
-        if (task.getCustomSubmissionTitle() != null && !task.getCustomSubmissionTitle().trim().isEmpty()) {
-            fldSubject.setText(task.getCustomSubmissionTitle());
+        this.fldSubject = new JFXTextField(String.format(this.submissionTitle, this.module.getName(), this.task.getName()));
+        if (this.task.getCustomSubmissionTitle() != null && !this.task.getCustomSubmissionTitle().trim().isEmpty()) {
+            this.fldSubject.setText(this.task.getCustomSubmissionTitle());
         }
-        fldSubject.setLabelFloat(true);
-        fldSubject.setPromptText("Submission Title / Subject");
+        this.fldSubject.setLabelFloat(true);
+        this.fldSubject.setPromptText("Submission Title / Subject");
 
-        String formOfAddress = module.getProfessor().getGender().toString();
-        if (Gender.DIVERS.equals(module.getProfessor().getGender())) {
-            formOfAddress = ",";
+        String body = "[BODY]";
+        try {
+            body = Files.readAllLines(Config.EMAIL_TEMPLATE_FILE.toPath()).stream().map(this::applyStringReplacer).collect(Collectors.joining("\n"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        this.textBody = new JFXTextArea(body);
+        this.textBody.setLabelFloat(true);
+        this.textBody.setPromptText("Content");
 
-        textBody = new JFXTextArea(String.format(body, formOfAddress, module.getProfessor().getLastname(), task.getName(), module.getName(), Settings.getEmailSettings().getProperty("mail.from")));
-        textBody.setLabelFloat(true);
-        textBody.setPromptText("Content");
+        this.btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send.png"));
+        this.btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
+        this.btnSubmit.setGraphicTextGap(10);
+        this.btnCancel = new JFXButton("Cancel");
 
-        btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send.png"));
-        btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
-        btnSubmit.setGraphicTextGap(10);
-        btnCancel = new JFXButton("Cancel");
-
-        ObservableList<String> attachments = FXCollections.observableArrayList(task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
+        ObservableList<String> attachments = FXCollections
+                .observableArrayList(this.task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
         this.viewAttachments = new ListView<>(attachments);
-        viewAttachments.setPrefHeight(150);
-        viewAttachments.setPlaceholder(new Label("No Files attached!", ImageLibrary.getImageView("warning.png")));
-        viewAttachments.setStyle("-fx-background-color: -fx-orange");
+        this.viewAttachments.setPrefHeight(150);
+        this.viewAttachments.setPlaceholder(new Label("No Files attached!", ImageLibrary.getImageView("warning.png")));
+        this.viewAttachments.setStyle("-fx-background-color: -fx-orange");
+    }
+
+    private String applyStringReplacer(final String s) {
+        String formattedString = s;
+        for (Entry<String, String> e : this.stringReplacer.entrySet()) {
+            formattedString = formattedString.replace(e.getKey(), e.getValue());
+        }
+        return formattedString;
     }
 
     @Override
     protected void setupInteractions() {
-        btnSubmit.disableProperty().bind(module.nameProperty().isEmpty());
+        this.btnSubmit.disableProperty().bind(this.module.nameProperty().isEmpty());
     }
 
     @Override
     protected void addWidgets() {
-        root.add(lblTitle, 0, 0, 2, 1);
-        root.add(fldRecipient, 0, 1, 2, 1);
-        root.add(fldSubject, 0, 2, 2, 1);
-        root.add(textBody, 0, 3, 2, 1);
-        root.add(viewAttachments, 0, 4, 2, 1);
-        root.add(btnCancel, 0, 5);
-        root.add(btnSubmit, 1, 5);
+        this.root.add(this.lblTitle, 0, 0, 2, 1);
+        this.root.add(this.fldRecipient, 0, 1, 2, 1);
+        this.root.add(this.fldSubject, 0, 2, 2, 1);
+        this.root.add(this.textBody, 0, 3, 2, 1);
+        this.root.add(this.viewAttachments, 0, 4, 2, 1);
+        this.root.add(this.btnCancel, 0, 5);
+        this.root.add(this.btnSubmit, 1, 5);
 
-        GridPane.setVgrow(viewAttachments, Priority.SOMETIMES);
+        GridPane.setVgrow(this.viewAttachments, Priority.SOMETIMES);
 
-        GridPane.setHalignment(lblTitle, HPos.CENTER);
-        GridPane.setHalignment(btnSubmit, HPos.RIGHT);
+        GridPane.setHalignment(this.lblTitle, HPos.CENTER);
+        GridPane.setHalignment(this.btnSubmit, HPos.RIGHT);
     }
 
 }

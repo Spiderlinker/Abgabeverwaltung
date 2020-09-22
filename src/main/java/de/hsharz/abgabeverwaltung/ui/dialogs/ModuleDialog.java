@@ -1,46 +1,47 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 import com.jfoenix.controls.JFXDialog;
+
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import javafx.scene.layout.StackPane;
 
-import java.util.Comparator;
-import java.util.Objects;
-
 public class ModuleDialog extends AbstractDialog {
 
     private ModuleDialogView moduleDialogView;
-    private Module module;
+    private Module           module;
 
-    public ModuleDialog(StackPane parent, Module module) {
+    public ModuleDialog(final StackPane parent, final Module module) {
         super(parent, JFXDialog.DialogTransition.TOP);
         this.module = Objects.requireNonNull(module);
 
-        createWidgets();
-        setupInteractions();
+        this.createWidgets();
+        this.setupInteractions();
 
-        setOverlayClose(false);
+        this.setOverlayClose(false);
     }
 
     private void createWidgets() {
-        moduleDialogView = new ModuleDialogView(module);
-        setContent(moduleDialogView.getPane());
+        this.moduleDialogView = new ModuleDialogView(this.module);
+        this.setContent(this.moduleDialogView.getPane());
     }
 
     private void setupInteractions() {
-        moduleDialogView.btnDelete.setOnAction(e -> {
-            ModuleDatabase.getInstance().removeModule(module);
-            close();
+        this.moduleDialogView.btnDelete.setOnAction(e -> {
+            ModuleDatabase.getInstance().removeModule(this.module);
+            this.close();
         });
-        moduleDialogView.btnSave.setOnAction(e -> {
-            close();
+        this.moduleDialogView.btnSave.setOnAction(e -> {
+            this.close();
             ModuleDatabase.getInstance().getModules().sort(Comparator.comparing(Module::getName));
         });
 
-        visibleProperty().addListener((observable, oldValue, newValue) -> {
-            moduleDialogView.fldModuleName.requestFocus();
-            moduleDialogView.fldModuleName.selectAll();
+        this.visibleProperty().addListener((observable, oldValue, newValue) -> {
+            this.moduleDialogView.fldModuleName.requestFocus();
+            this.moduleDialogView.fldModuleName.selectAll();
         });
     }
 

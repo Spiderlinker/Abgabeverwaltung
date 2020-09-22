@@ -6,12 +6,12 @@ public enum Gender {
 
     private String asString;
 
-     Gender(String asString) {
+    Gender(final String asString) {
         this.asString = asString;
     }
 
     @Override
     public String toString() {
-        return asString;
+        return this.asString;
     }
 }

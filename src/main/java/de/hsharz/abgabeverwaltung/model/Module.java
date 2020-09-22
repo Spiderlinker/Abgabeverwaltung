@@ -1,5 +1,7 @@
 package de.hsharz.abgabeverwaltung.model;
 
+import java.util.Objects;
+
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.spiderlinker.utils.StringUtils;
 import javafx.beans.property.ObjectProperty;
@@ -9,13 +11,11 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.Objects;
-
 public class Module {
 
-    private StringProperty name = new SimpleStringProperty("DefaultName");
+    private StringProperty         name      = new SimpleStringProperty("DefaultName");
     private ObjectProperty<Person> professor = new SimpleObjectProperty<>();
-    private ObservableList<Task> tasks = FXCollections.observableArrayList();
+    private ObservableList<Task>   tasks     = FXCollections.observableArrayList();
 
     public Module(final String name) {
         this.setName(name);
@@ -38,7 +38,7 @@ public class Module {
         return this.name;
     }
 
-    public void setProfessor(Person person) {
+    public void setProfessor(final Person person) {
         this.professor.set(person);
     }
 
@@ -52,9 +52,9 @@ public class Module {
 
     public void addTask(final Task task) {
         Objects.requireNonNull(task);
-//        if (!this.tasks.contains(task)) {
+        //        if (!this.tasks.contains(task)) {
         this.tasks.add(task);
-//        }
+        //        }
     }
 
     public void removeTask(final Task task) {
@@ -67,9 +67,7 @@ public class Module {
 
     @Override
     public String toString() {
-        return "Module{" +
-                "name=" + name +
-                '}';
+        return "Module{" + "name=" + this.name + '}';
     }
 
 }

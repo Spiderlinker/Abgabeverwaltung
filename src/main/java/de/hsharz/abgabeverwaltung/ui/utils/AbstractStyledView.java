@@ -4,13 +4,13 @@ import javafx.scene.layout.Pane;
 
 public abstract class AbstractStyledView<P extends Pane> extends AbstractView<P> {
 
-    public AbstractStyledView(P root) {
+    public AbstractStyledView(final P root) {
         super(root);
-        loadStylesheet();
+        this.loadStylesheet();
     }
 
     private void loadStylesheet() {
-        root.getStylesheets().add(getClass().getResource(getStylesheet()).toExternalForm());
+        this.root.getStylesheets().add(this.getClass().getResource(this.getStylesheet()).toExternalForm());
     }
 
     protected abstract String getStylesheet();

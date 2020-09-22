@@ -1,9 +1,15 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+
 import de.hsharz.abgabeverwaltung.Config;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
@@ -12,27 +18,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.Properties;
-
 public class SettingsDialogView extends AbstractStyledView<GridPane> {
 
-    private Label lblTitle;
+    private Label              lblTitle;
 
-    protected JFXTextField fldName;
-    protected JFXTextField fldEmail;
+    protected JFXTextField     fldName;
+    protected JFXTextField     fldEmail;
     protected JFXPasswordField fldPassword;
-    protected JFXCheckBox boxSendBccToMyself;
+    protected JFXCheckBox      boxSendBccToMyself;
 
-    private Button btnOpenConfigurationFile;
-    protected Button btnCancel;
-    protected Button btnSave;
+    private Button             btnOpenConfigurationFile;
+    private Button             btnOpenEmailTemplate;
+    protected Button           btnCancel;
+    protected Button           btnSave;
 
     public SettingsDialogView() {
         super(new GridPane());
 
-        initializeView();
+        this.initializeView();
     }
 
     @Override
@@ -42,63 +45,72 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
 
     @Override
     protected void createWidgets() {
-        root.getStyleClass().add("root");
-        root.setPrefSize(500, 400);
-        LayoutUtils.setColumnWidths(root, 50, 50);
+        this.root.getStyleClass().add("root");
+        this.root.setPrefSize(500, 400);
+        LayoutUtils.setColumnWidths(this.root, 50, 50);
 
-        lblTitle = new Label("Settings");
-        lblTitle.getStyleClass().add("title");
+        this.lblTitle = new Label("Settings");
+        this.lblTitle.getStyleClass().add("title");
 
-        fldName = new JFXTextField();
-        fldName.setPromptText("Your Name");
-        fldName.setLabelFloat(true);
+        this.fldName = new JFXTextField();
+        this.fldName.setPromptText("Your Name");
+        this.fldName.setLabelFloat(true);
 
-        fldEmail = new JFXTextField();
-        fldEmail.setPromptText("Your E-Mail-Address");
-        fldEmail.setLabelFloat(true);
+        this.fldEmail = new JFXTextField();
+        this.fldEmail.setPromptText("Your E-Mail-Address");
+        this.fldEmail.setLabelFloat(true);
 
-        fldPassword = new JFXPasswordField();
-        fldPassword.setPromptText("Password of your E-Mail-Address");
-        fldPassword.setLabelFloat(true);
+        this.fldPassword = new JFXPasswordField();
+        this.fldPassword.setPromptText("Password of your E-Mail-Address");
+        this.fldPassword.setLabelFloat(true);
 
-        boxSendBccToMyself = new JFXCheckBox("Send a Copy (BCC) of every submission to my E-Mail-Address");
+        this.boxSendBccToMyself = new JFXCheckBox("Send a Copy (BCC) of every submission to my E-Mail-Address");
 
-        btnOpenConfigurationFile = new JFXButton("Open E-Mail Configuration File");
-        btnCancel = new JFXButton("Cancel");
-        btnSave = new JFXButton("Save & Close");
+        this.btnOpenConfigurationFile = new JFXButton("Open E-Mail Configuration");
+        this.btnOpenEmailTemplate = new JFXButton("Open E-Mail Template File");
+
+        this.btnCancel = new JFXButton("Cancel");
+        this.btnCancel.getStyleClass().add("cancel-button");
+
+        this.btnSave = new JFXButton("Save & Close");
+        this.btnSave.getStyleClass().add("save-button");
     }
 
     @Override
     protected void setupInteractions() {
-        btnOpenConfigurationFile.setOnAction(e -> {
-            try {
-                Desktop.getDesktop().open(Config.EMAIL_SERVER_CONFIGURATION_FILE);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        });
+        this.btnOpenConfigurationFile.setOnAction(e -> this.openFile(Config.EMAIL_SERVER_CONFIGURATION_FILE));
+        this.btnOpenEmailTemplate.setOnAction(e -> this.openFile(Config.EMAIL_TEMPLATE_FILE));
+    }
+
+    private void openFile(final File f) {
+        try {
+            Desktop.getDesktop().open(f);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     protected void addWidgets() {
-        root.add(lblTitle, 0, 0, 2, 1);
-        root.add(fldName, 0, 1, 2, 1);
-        root.add(fldEmail, 0, 2);
-        root.add(fldPassword, 1, 2);
-        root.add(boxSendBccToMyself, 0, 3, 2, 1);
-        root.add(btnOpenConfigurationFile, 0, 4, 2, 1);
-        root.add(btnCancel, 0, 5);
-        root.add(btnSave, 1, 5);
+        this.root.add(this.lblTitle, 0, 0, 2, 1);
+        this.root.add(this.fldName, 0, 1, 2, 1);
+        this.root.add(this.fldEmail, 0, 2);
+        this.root.add(this.fldPassword, 1, 2);
+        this.root.add(this.boxSendBccToMyself, 0, 3, 2, 1);
+        this.root.add(this.btnOpenEmailTemplate, 0, 4);
+        this.root.add(this.btnOpenConfigurationFile, 1, 4);
+        this.root.add(this.btnCancel, 0, 5);
+        this.root.add(this.btnSave, 1, 5);
 
-        GridPane.setHalignment(lblTitle, HPos.CENTER);
-        GridPane.setHalignment(btnSave, HPos.RIGHT);
+        GridPane.setHalignment(this.lblTitle, HPos.CENTER);
+        GridPane.setHalignment(this.btnSave, HPos.RIGHT);
     }
 
-    protected void updateConfigurationSettings(Properties properties) {
-        fldName.setText(properties.getProperty("mail.from"));
-        fldEmail.setText(properties.getProperty("mail.username"));
-        fldPassword.setText(properties.getProperty("mail.password"));
-        boxSendBccToMyself.setSelected(Boolean.parseBoolean(properties.getProperty("mail.bcc")));
+    protected void updateConfigurationSettings(final Properties properties) {
+        this.fldName.setText(properties.getProperty("mail.from"));
+        this.fldEmail.setText(properties.getProperty("mail.username"));
+        this.fldPassword.setText(properties.getProperty("mail.password"));
+        this.boxSendBccToMyself.setSelected(Boolean.parseBoolean(properties.getProperty("mail.bcc")));
     }
 
 }

@@ -1,7 +1,11 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
+
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -12,50 +16,45 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 
-import java.util.Objects;
-import java.util.Optional;
-
 public class TaskSubmitDialog extends AbstractDialog {
 
-    private StackPane root;
-    private JFXProgressBar progressBar;
+    private StackPane            root;
+    private JFXProgressBar       progressBar;
     private TaskSubmitDialogView taskSubmitDialogView;
 
-    private Module module;
-    private Task task;
+    private Module               module;
+    private Task                 task;
 
-    public TaskSubmitDialog(StackPane parent, Module module, Task task) {
+    public TaskSubmitDialog(final StackPane parent, final Module module, final Task task) {
         super(parent, JFXDialog.DialogTransition.TOP);
         this.module = Objects.requireNonNull(module);
         this.task = Objects.requireNonNull(task);
 
-        createWidgets();
-        setupInteractions();
+        this.createWidgets();
+        this.setupInteractions();
     }
 
     private void createWidgets() {
-        root = new StackPane();
-        progressBar = new JFXProgressBar(-1);
-        progressBar.setVisible(false);
-        progressBar.setMaxWidth(Double.MAX_VALUE);
+        this.root = new StackPane();
+        this.progressBar = new JFXProgressBar(-1);
+        this.progressBar.setVisible(false);
+        this.progressBar.setMaxWidth(Double.MAX_VALUE);
 
-        taskSubmitDialogView = new TaskSubmitDialogView(module, task);
-        root.getChildren().addAll(taskSubmitDialogView.getPane(), progressBar);
+        this.taskSubmitDialogView = new TaskSubmitDialogView(this.module, this.task);
+        this.root.getChildren().addAll(this.taskSubmitDialogView.getPane(), this.progressBar);
 
-        StackPane.setAlignment(progressBar, Pos.BOTTOM_CENTER);
+        StackPane.setAlignment(this.progressBar, Pos.BOTTOM_CENTER);
 
-        setContent(root);
+        this.setContent(this.root);
     }
 
     private void setupInteractions() {
-        taskSubmitDialogView.btnSubmit.setOnAction(e -> {
+        this.taskSubmitDialogView.btnSubmit.setOnAction(e -> {
 
-
-            boolean sendMail = getConfirmationOfUserToSendMail();
+            boolean sendMail = this.getConfirmationOfUserToSendMail();
             if (!sendMail) {
                 return;
             }
-
 
             System.out.println("Send mail");
 
@@ -66,7 +65,7 @@ public class TaskSubmitDialog extends AbstractDialog {
                 public Void call() throws Exception {
                     Settings.reloadEmailServerProperties();
                     Settings.reloadEmailProperties();
-                    BasicMail mail = composeMail();
+                    BasicMail mail = TaskSubmitDialog.this.composeMail();
                     mailSender[0] = new MailSender(mail);
                     mailSender[0].sendMailAndStoreInSentFolder();
                     return null;
@@ -74,41 +73,41 @@ public class TaskSubmitDialog extends AbstractDialog {
             };
 
             task.setOnSucceeded(event -> {
-                progressBar.setVisible(false);
-                setDisabled(false);
-                close();
+                this.progressBar.setVisible(false);
+                this.setDisabled(false);
+                this.close();
                 this.task.setFinished(true);
             });
 
             task.setOnFailed(event -> {
-                progressBar.setVisible(false);
-                setDisabled(false);
+                this.progressBar.setVisible(false);
+                this.setDisabled(false);
 
                 String message = task.getException().getMessage();
 
-//                if (task.getException() instanceof MessagingException) {
-//                    message = "Could not send message. Please check your username and password!";
-//                } else if (task.getException() instanceof UnsupportedEncodingException) {
-//                    message = "Invalid character on your Name. Please remove them!";
-//                }
+                //                if (task.getException() instanceof MessagingException) {
+                //                    message = "Could not send message. Please check your username and password!";
+                //                } else if (task.getException() instanceof UnsupportedEncodingException) {
+                //                    message = "Invalid character on your Name. Please remove them!";
+                //                }
                 new Alert(Alert.AlertType.ERROR, message, ButtonType.CLOSE).showAndWait();
             });
 
             task.setOnRunning(event -> {
-                setDisabled(true);
-                progressBar.setVisible(true);
+                this.setDisabled(true);
+                this.progressBar.setVisible(true);
             });
 
             new Thread(task).start();
         });
 
-        taskSubmitDialogView.btnCancel.setOnAction(e -> close());
+        this.taskSubmitDialogView.btnCancel.setOnAction(e -> this.close());
     }
 
     private boolean getConfirmationOfUserToSendMail() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Submit Task?");
-        alert.setContentText("Do you really want to submit this task to " + module.getProfessor().getEmail());
+        alert.setContentText("Do you really want to submit this task to " + this.module.getProfessor().getEmail());
         alert.getButtonTypes().clear();
         ButtonType submitButton = new ButtonType("Yes, Submit");
         ButtonType cancelButton = new ButtonType("No");
@@ -121,13 +120,13 @@ public class TaskSubmitDialog extends AbstractDialog {
 
     private BasicMail composeMail() {
         BasicMail mail = new BasicMail();
-        String[] recipients = taskSubmitDialogView.fldRecipient.getText().split(",");
+        String[] recipients = this.taskSubmitDialogView.fldRecipient.getText().split(",");
         for (String recipient : recipients) {
             mail.addRecipient(recipient.trim());
         }
-        mail.getAttachedFiles().addAll(task.getAttachments());
-        mail.setSubject(taskSubmitDialogView.fldSubject.getText());
-        mail.setBody(taskSubmitDialogView.textBody.getText());
+        mail.getAttachedFiles().addAll(this.task.getAttachments());
+        mail.setSubject(this.taskSubmitDialogView.fldSubject.getText());
+        mail.setBody(this.taskSubmitDialogView.textBody.getText());
 
         mail.setFrom(Settings.getEmailSettings().getProperty("mail.username"), Settings.getEmailSettings().getProperty("user.name"));
 

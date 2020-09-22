@@ -1,6 +1,7 @@
 package de.hsharz.abgabeverwaltung.ui.views;
 
 import com.jfoenix.controls.JFXButton;
+
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -22,21 +23,21 @@ import javafx.scene.layout.StackPane;
 
 public class ModuleView extends AbstractStyledView<BorderPane> {
 
-    private StackPane parent;
+    private StackPane              parent;
 
-    private Label lblModule;
-    private Button btnAddTask;
-    private Button btnRemoveModule;
-    private Button btnEditModule;
-    private ListView<Task> viewTasks;
+    private Label                  lblModule;
+    private Button                 btnAddTask;
+    private Button                 btnRemoveModule;
+    private Button                 btnEditModule;
+    private ListView<Task>         viewTasks;
 
     private ObjectProperty<Module> module = new SimpleObjectProperty<>();
 
-    public ModuleView(StackPane parent) {
+    public ModuleView(final StackPane parent) {
         super(new BorderPane());
         this.parent = parent;
 
-        initializeView();
+        this.initializeView();
     }
 
     @Override
@@ -46,46 +47,46 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
 
     @Override
     protected void createWidgets() {
-        root.setPrefSize(0, 300);
+        this.root.setPrefSize(0, 300);
 
-        lblModule = new Label();
-        lblModule.getStyleClass().add("header-label");
+        this.lblModule = new Label();
+        this.lblModule.getStyleClass().add("header-label");
 
-        btnAddTask = new JFXButton("Add Task");
-        btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash.png"));
-        btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit.png"));
+        this.btnAddTask = new JFXButton("Add Task");
+        this.btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash.png"));
+        this.btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit.png"));
 
-        viewTasks = new ListView<>();
-        viewTasks.setOrientation(Orientation.HORIZONTAL);
-        viewTasks.setCellFactory(param -> new TaskView(parent, module).newListCell());
-        viewTasks.setPlaceholder(new Label("Click 'Add Task' to create your first Task for this Module"));
+        this.viewTasks = new ListView<>();
+        this.viewTasks.setOrientation(Orientation.HORIZONTAL);
+        this.viewTasks.setCellFactory(param -> new TaskView(this.parent, this.module).newListCell());
+        this.viewTasks.setPlaceholder(new Label("Click 'Add Task' to create your first Task for this Module"));
 
     }
 
     @Override
     protected void setupInteractions() {
-        btnAddTask.setOnAction(e -> {
+        this.btnAddTask.setOnAction(e -> {
             Task task = new Task("New Task...");
-            module.get().addTask(task);
-            new TaskDialog(parent, module.get(), task).show();
+            this.module.get().addTask(task);
+            new TaskDialog(this.parent, this.module.get(), task).show();
         });
 
-        btnEditModule.setOnAction(e -> new ModuleDialog(parent, module.get()).show());
+        this.btnEditModule.setOnAction(e -> new ModuleDialog(this.parent, this.module.get()).show());
 
-        btnRemoveModule.setOnAction(e -> ModuleDatabase.getInstance().removeModule(module.get()));
+        this.btnRemoveModule.setOnAction(e -> ModuleDatabase.getInstance().removeModule(this.module.get()));
     }
 
     @Override
     protected void addWidgets() {
 
         HBox boxTitle = new HBox(5);
-        boxTitle.getChildren().addAll(btnAddTask, LayoutUtils.getHSpacer(), lblModule, LayoutUtils.getHSpacer(), btnEditModule, btnRemoveModule);
+        boxTitle.getChildren().addAll(this.btnAddTask, LayoutUtils.getHSpacer(), this.lblModule, LayoutUtils.getHSpacer(), this.btnEditModule,
+                this.btnRemoveModule);
         boxTitle.getStyleClass().add("headerBox");
 
-        root.setTop(boxTitle);
-        root.setCenter(viewTasks);
+        this.root.setTop(boxTitle);
+        this.root.setCenter(this.viewTasks);
     }
-
 
     public ListCell<Module> newListCell() {
         return new ModuleListCell();
@@ -94,20 +95,20 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
     private class ModuleListCell extends ListCell<Module> {
 
         @Override
-        protected void updateItem(Module item, boolean empty) {
+        protected void updateItem(final Module item, final boolean empty) {
             super.updateItem(item, empty);
 
-            module.set(item);
+            ModuleView.this.module.set(item);
 
             if (item == null) {
-                setGraphic(null);
+                this.setGraphic(null);
                 return;
             }
 
-            lblModule.textProperty().bind(item.nameProperty());
-            viewTasks.setItems(item.getTasks());
+            ModuleView.this.lblModule.textProperty().bind(item.nameProperty());
+            ModuleView.this.viewTasks.setItems(item.getTasks());
 
-            setGraphic(root);
+            this.setGraphic(ModuleView.this.root);
         }
     }
 }

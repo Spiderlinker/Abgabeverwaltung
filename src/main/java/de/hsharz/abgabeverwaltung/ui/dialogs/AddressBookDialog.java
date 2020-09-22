@@ -6,21 +6,21 @@ public class AddressBookDialog extends AbstractDialog {
 
     private AddressBookDialogView addressBookDialogView;
 
-    public AddressBookDialog(StackPane parent) {
+    public AddressBookDialog(final StackPane parent) {
         super(parent, DialogTransition.TOP);
 
-        createWidgets();
-        setupInteractions();
-        enableCloseOnEscape();
+        this.createWidgets();
+        this.setupInteractions();
+        this.enableCloseOnEscape();
     }
 
     private void createWidgets() {
-        addressBookDialogView = new AddressBookDialogView();
-        setContent(addressBookDialogView.getPane());
+        this.addressBookDialogView = new AddressBookDialogView();
+        this.setContent(this.addressBookDialogView.getPane());
     }
 
     private void setupInteractions() {
-        addressBookDialogView.btnClose.setOnAction(e -> close());
+        this.addressBookDialogView.btnClose.setOnAction(e -> this.close());
     }
 
 }

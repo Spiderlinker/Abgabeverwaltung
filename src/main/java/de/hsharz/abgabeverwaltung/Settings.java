@@ -1,12 +1,15 @@
 package de.hsharz.abgabeverwaltung;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
 public class Settings {
 
-    private static final Properties emailSettings = new Properties();
+    private static final Properties emailSettings       = new Properties();
     private static final Properties emailServerSettings = new Properties();
 
     private Settings() {
@@ -29,7 +32,7 @@ public class Settings {
         reloadProperties(emailServerSettings, Config.EMAIL_SERVER_CONFIGURATION_FILE);
     }
 
-    private static void reloadProperties(Properties properties, File propertiesFile) {
+    private static void reloadProperties(final Properties properties, final File propertiesFile) {
         try {
             if (!propertiesFile.exists()) {
                 Files.copy(Settings.class.getResourceAsStream("/files/" + propertiesFile.getName()), propertiesFile.toPath());
@@ -40,7 +43,6 @@ public class Settings {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void saveEmailProperties() {
@@ -51,7 +53,7 @@ public class Settings {
         saveProperties(emailServerSettings, Config.EMAIL_SERVER_CONFIGURATION_FILE);
     }
 
-    private static void saveProperties(Properties properties, File propertiesFile) {
+    private static void saveProperties(final Properties properties, final File propertiesFile) {
         try {
             propertiesFile.getParentFile().mkdirs();
             propertiesFile.createNewFile();
@@ -63,6 +65,4 @@ public class Settings {
         }
     }
 
-
 }
-

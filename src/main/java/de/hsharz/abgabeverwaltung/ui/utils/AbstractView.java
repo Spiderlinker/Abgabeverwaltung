@@ -6,14 +6,14 @@ public abstract class AbstractView<P extends Pane> {
 
     protected P root;
 
-    public AbstractView(P root) {
+    public AbstractView(final P root) {
         this.root = root;
     }
 
     protected void initializeView() {
-        createWidgets();
-        setupInteractions();
-        addWidgets();
+        this.createWidgets();
+        this.setupInteractions();
+        this.addWidgets();
     }
 
     protected void createWidgets() {
@@ -28,9 +28,8 @@ public abstract class AbstractView<P extends Pane> {
         // Implement your stuff here
     }
 
-
     public P getPane() {
-        return root;
+        return this.root;
     }
 
 }

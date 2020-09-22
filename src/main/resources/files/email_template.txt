@@ -1,0 +1,7 @@
+Hallo[FORM_OF_ADDRESS] [PROF_NAME],
+
+im Anhang finden Sie meine Abgabe für die Aufgabe '[TASK_NAME]' in dem Modul '[MODULE_NAME]'.
+
+
+Mit freundlichen Grüßen
+[USER_FULL_NAME]

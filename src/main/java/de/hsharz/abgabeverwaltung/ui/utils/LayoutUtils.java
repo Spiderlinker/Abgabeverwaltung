@@ -1,6 +1,12 @@
 package de.hsharz.abgabeverwaltung.ui.utils;
 
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 
 public class LayoutUtils {
 
@@ -28,7 +34,7 @@ public class LayoutUtils {
      * ##### GridPaneUtils #####
      * ######################### */
 
-    public static void setColumnWidths(GridPane root, int... columnWidths) {
+    public static void setColumnWidths(final GridPane root, final int... columnWidths) {
         for (int columnWidth : columnWidths) {
             ColumnConstraints c = new ColumnConstraints();
             c.setPercentWidth(columnWidth);
@@ -36,7 +42,7 @@ public class LayoutUtils {
         }
     }
 
-    public static void setRowHeight(GridPane root, int... rowHeights) {
+    public static void setRowHeight(final GridPane root, final int... rowHeights) {
         for (int rowHeight : rowHeights) {
             RowConstraints r = new RowConstraints();
             r.setPercentHeight(rowHeight);

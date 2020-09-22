@@ -1,18 +1,18 @@
 package de.hsharz.abgabeverwaltung.model.addresses;
 
+import java.util.Objects;
+
 import de.spiderlinker.utils.StringUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.Objects;
-
 public class Person {
 
-    private StringProperty lastname = new SimpleStringProperty();
-    private StringProperty email = new SimpleStringProperty();
-    private ObjectProperty<Gender> gender = new SimpleObjectProperty<>();
+    private StringProperty         lastname = new SimpleStringProperty();
+    private StringProperty         email    = new SimpleStringProperty();
+    private ObjectProperty<Gender> gender   = new SimpleObjectProperty<>();
 
     public Person(final String lastname, final String email, final Gender gender) {
         this.setLastname(lastname);
@@ -29,7 +29,7 @@ public class Person {
     }
 
     public StringProperty lastnameProperty() {
-        return lastname;
+        return this.lastname;
     }
 
     public void setEmail(final String email) {
@@ -41,7 +41,7 @@ public class Person {
     }
 
     public StringProperty emailProperty() {
-        return email;
+        return this.email;
     }
 
     public void setGender(final Gender gender) {
@@ -53,7 +53,7 @@ public class Person {
     }
 
     public ObjectProperty<Gender> genderProperty() {
-        return gender;
+        return this.gender;
     }
 
     @Override
@@ -62,18 +62,21 @@ public class Person {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
-        return lastname.get().equals(person.lastname.get()) &&
-                email.get().equals(person.email.get()) &&
-                gender.get().equals(person.gender.get());
+        return this.lastname.get().equals(person.lastname.get()) && this.email.get().equals(person.email.get())
+                && this.gender.get().equals(person.gender.get());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(lastname, email, gender);
+        return Objects.hash(this.lastname, this.email, this.gender);
     }
 
 }

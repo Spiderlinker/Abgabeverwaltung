@@ -1,10 +1,10 @@
 package de.hsharz.abgabeverwaltung.model.addresses;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.util.Comparator;
 import java.util.Objects;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class AddressBook {
 
