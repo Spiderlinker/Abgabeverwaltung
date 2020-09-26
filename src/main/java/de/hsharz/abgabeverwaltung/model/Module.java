@@ -1,6 +1,7 @@
 package de.hsharz.abgabeverwaltung.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
 import de.spiderlinker.utils.StringUtils;
@@ -13,17 +14,20 @@ import javafx.collections.ObservableList;
 
 public class Module {
 
+    private final UUID             uuid;
     private StringProperty         name      = new SimpleStringProperty("DefaultName");
     private ObjectProperty<Person> professor = new SimpleObjectProperty<>();
     private ObservableList<Task>   tasks     = FXCollections.observableArrayList();
 
     public Module(final String name) {
-        this.setName(name);
+        this(name, null);
     }
 
     public Module(final String name, final Person prof) {
         this.setName(name);
         this.setProfessor(prof);
+
+        this.uuid = UUID.randomUUID();
     }
 
     public void setName(final String name) {
@@ -63,6 +67,10 @@ public class Module {
 
     public ObservableList<Task> getTasks() {
         return this.tasks;
+    }
+
+    public UUID getUUID() {
+        return this.uuid;
     }
 
     @Override

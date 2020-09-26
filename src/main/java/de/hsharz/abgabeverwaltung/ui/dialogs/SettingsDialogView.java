@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import de.hsharz.abgabeverwaltung.Config;
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.geometry.HPos;
@@ -49,30 +50,30 @@ public class SettingsDialogView extends AbstractStyledView<GridPane> {
         this.root.setPrefSize(500, 400);
         LayoutUtils.setColumnWidths(this.root, 50, 50);
 
-        this.lblTitle = new Label("Settings");
+        this.lblTitle = new Label(Language.getString("Settings"));
         this.lblTitle.getStyleClass().add("title");
 
         this.fldName = new JFXTextField();
-        this.fldName.setPromptText("Your Name");
+        this.fldName.setPromptText(Language.getString("YourName"));
         this.fldName.setLabelFloat(true);
 
         this.fldEmail = new JFXTextField();
-        this.fldEmail.setPromptText("Your E-Mail-Address");
+        this.fldEmail.setPromptText(Language.getString("YourEmailAddress"));
         this.fldEmail.setLabelFloat(true);
 
         this.fldPassword = new JFXPasswordField();
-        this.fldPassword.setPromptText("Password of your E-Mail-Address");
+        this.fldPassword.setPromptText(Language.getString("PasswordOfYourEmailAddress"));
         this.fldPassword.setLabelFloat(true);
 
-        this.boxSendBccToMyself = new JFXCheckBox("Send a Copy (BCC) of every submission to my E-Mail-Address");
+        this.boxSendBccToMyself = new JFXCheckBox(Language.getString("SendCopyToBcc"));
 
-        this.btnOpenConfigurationFile = new JFXButton("Open E-Mail Configuration");
-        this.btnOpenEmailTemplate = new JFXButton("Open E-Mail Template File");
+        this.btnOpenConfigurationFile = new JFXButton(Language.getString("OpenEmailConfiguration"));
+        this.btnOpenEmailTemplate = new JFXButton(Language.getString("OpenEmailTemplate"));
 
-        this.btnCancel = new JFXButton("Cancel");
+        this.btnCancel = new JFXButton(Language.getString("Cancel"));
         this.btnCancel.getStyleClass().add("cancel-button");
 
-        this.btnSave = new JFXButton("Save & Close");
+        this.btnSave = new JFXButton(Language.getString("SaveAndClose"));
         this.btnSave.getStyleClass().add("save-button");
     }
 

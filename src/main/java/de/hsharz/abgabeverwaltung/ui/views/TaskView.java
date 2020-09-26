@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import com.jfoenix.controls.JFXButton;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.ui.dialogs.TaskDialog;
@@ -27,6 +28,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 
 public class TaskView extends AbstractStyledView<StackPane> {
 
@@ -86,16 +88,18 @@ public class TaskView extends AbstractStyledView<StackPane> {
         this.lblAttachments = new Label("", ImageLibrary.getImageView("attachments.png"));
 
         this.boxButton = new HBox(10);
-        this.btnSubmit = new JFXButton("Review & Submit", ImageLibrary.getImageView("check_next.png"));
-        this.btnRedo = new JFXButton("Re-Open", ImageLibrary.getImageView("repeat.png"));
+        this.btnSubmit = new JFXButton(Language.getString("ReviewAndSubmit"), ImageLibrary.getImageView("check_next.png"));
+        this.btnRedo = new JFXButton(Language.getString("ReOpen"), ImageLibrary.getImageView("repeat.png"));
         this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash.png"));
 
         this.dragPane = new BorderPane();
         this.dragPane.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
-        Label label = new Label("Drop here to add file to task");
+        Label label = new Label(Language.getString("DropHere"));
+        label.setWrapText(true);
         label.setStyle("-fx-font-size: 14pt;");
+        label.setTextAlignment(TextAlignment.CENTER);
         this.dragPane.setCenter(label);
-        UiUtils.addFilesDropFeature(this.dragPane, this.task::addAttachments);
+        UiUtils.addFilesDropFeature(this.dragPane, file -> this.task.addAttachments(file));
 
         this.dragPane.setVisible(false);
     }

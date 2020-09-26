@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
@@ -49,25 +50,25 @@ public class ModuleDialogView extends AbstractStyledView<GridPane> {
 
         LayoutUtils.setColumnWidths(this.root, 60, 40);
 
-        this.lblTitle = new Label("Edit Module");
+        this.lblTitle = new Label(Language.getString("EditModule"));
         this.lblTitle.getStyleClass().add("title");
 
         this.fldModuleName = new JFXTextField();
         this.fldModuleName.textProperty().bindBidirectional(this.module.nameProperty());
-        this.fldModuleName.setPromptText("Module name");
+        this.fldModuleName.setPromptText(Language.getString("ModuleName"));
         this.fldModuleName.setLabelFloat(true);
 
         this.boxProf = new JFXComboBox<>(AddressBook.getContacts());
         this.boxProf.getSelectionModel().select(this.module.getProfessor());
         this.module.professorProperty().bind(this.boxProf.getSelectionModel().selectedItemProperty());
-        this.boxProf.setPromptText("Professor of this module");
+        this.boxProf.setPromptText(Language.getString("ProfOfThisModule"));
         this.boxProf.setLabelFloat(true);
 
-        this.btnSave = new JFXButton("Save Module");
+        this.btnSave = new JFXButton(Language.getString("SaveModule"));
         this.btnSave.getStyleClass().add("save-button");
         this.btnSave.setDefaultButton(true);
-        this.btnDelete = new JFXButton("Delete Module", ImageLibrary.getImageView("trash.png"));
-        this.btnManageProfs = new JFXButton("Manage Professors");
+        this.btnDelete = new JFXButton(Language.getString("DeleteModule"), ImageLibrary.getImageView("trash.png"));
+        this.btnManageProfs = new JFXButton(Language.getString("ManageProfessor"));
     }
 
     @Override

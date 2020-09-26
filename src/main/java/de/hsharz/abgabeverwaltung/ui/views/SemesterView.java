@@ -2,6 +2,7 @@ package de.hsharz.abgabeverwaltung.ui.views;
 
 import com.jfoenix.controls.JFXButton;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.ui.dialogs.DialogCache;
@@ -23,7 +24,6 @@ public class SemesterView extends AbstractStyledView<StackPane> {
     private VBox             mainPane;
     private HBox             boxTop;
 
-    private Label            lblTitle;
     private Button           btnAddModule;
     private Button           btnManageProfs;
     private Button           btnSettings;
@@ -47,21 +47,18 @@ public class SemesterView extends AbstractStyledView<StackPane> {
         this.mainPane = new VBox();
         this.mainPane.getStyleClass().add("mainPane");
 
-        this.lblTitle = new Label("Task Manage & Submission System");
-        this.lblTitle.getStyleClass().add("labelTitle");
-
         this.boxTop = new HBox(20);
         this.boxTop.getStyleClass().add("boxTop");
 
-        this.btnManageProfs = new JFXButton("Manage Professors", ImageLibrary.getImageView("address_book.png"));
+        this.btnManageProfs = new JFXButton(Language.getString("ManageProfessor"), ImageLibrary.getImageView("address_book.png"));
         this.btnManageProfs.setAlignment(Pos.CENTER_LEFT);
-        this.btnSettings = new JFXButton("Settings", ImageLibrary.getImageView("settings.png"));
+        this.btnSettings = new JFXButton(Language.getString("Settings"), ImageLibrary.getImageView("settings.png"));
         this.btnSettings.setAlignment(Pos.CENTER_LEFT);
-        this.btnAddModule = new JFXButton("Add new module");
+        this.btnAddModule = new JFXButton(Language.getString("AddModule"));
 
         this.viewModules = new ListView<>(ModuleDatabase.getInstance().getModules());
         this.viewModules.setCellFactory(param -> new ModuleView(this.root).newListCell());
-        this.viewModules.setPlaceholder(new Label("Click 'Create Module' to create your first Module"));
+        this.viewModules.setPlaceholder(new Label(Language.getString("ClickAddModule")));
 
     }
 
@@ -69,7 +66,7 @@ public class SemesterView extends AbstractStyledView<StackPane> {
     protected void setupInteractions() {
         this.btnAddModule.setOnAction(e -> {
 
-            Module module = new Module("New Module...");
+            Module module = new Module(Language.getString("NewModule"));
             ModuleDatabase.getInstance().addModule(module);
             new ModuleDialog(this.root, module).show();
         });
@@ -87,7 +84,6 @@ public class SemesterView extends AbstractStyledView<StackPane> {
         this.boxTop.getChildren().addAll(this.btnAddModule, LayoutUtils.getHSpacer(), this.btnManageProfs, this.btnSettings);
         HBox.setHgrow(this.btnAddModule, Priority.SOMETIMES);
 
-        this.mainPane.getChildren().add(this.lblTitle);
         this.mainPane.getChildren().add(this.boxTop);
         this.mainPane.getChildren().add(this.viewModules);
 

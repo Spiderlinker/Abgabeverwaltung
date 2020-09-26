@@ -4,6 +4,10 @@
     -fx-alignment: center;
 }
 
+.headerBox:invalid {
+	-fx-background-color: -fx-red;
+}
+
 .header-label {
     -fx-font-family: Calibri;
     -fx-font-size: 15pt;

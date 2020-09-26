@@ -1,6 +1,7 @@
 package de.hsharz.abgabeverwaltung.model.addresses;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import de.spiderlinker.utils.StringUtils;
 import javafx.beans.property.ObjectProperty;
@@ -10,6 +11,7 @@ import javafx.beans.property.StringProperty;
 
 public class Person {
 
+    private final UUID             uuid;
     private StringProperty         lastname = new SimpleStringProperty();
     private StringProperty         email    = new SimpleStringProperty();
     private ObjectProperty<Gender> gender   = new SimpleObjectProperty<>();
@@ -18,6 +20,7 @@ public class Person {
         this.setLastname(lastname);
         this.setEmail(email);
         this.setGender(gender);
+        this.uuid = UUID.randomUUID();
     }
 
     public void setLastname(final String lastname) {
@@ -54,6 +57,10 @@ public class Person {
 
     public ObjectProperty<Gender> genderProperty() {
         return this.gender;
+    }
+
+    public UUID getUUID() {
+        return this.uuid;
     }
 
     @Override

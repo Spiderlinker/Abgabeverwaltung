@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -13,6 +14,7 @@ import de.hsharz.abgabeverwaltung.submit.BasicMail;
 import de.hsharz.abgabeverwaltung.submit.MailSender;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.StackPane;
 
@@ -30,8 +32,17 @@ public class TaskSubmitDialog extends AbstractDialog {
         this.module = Objects.requireNonNull(module);
         this.task = Objects.requireNonNull(task);
 
+        this.checkModuleForCorrectness();
+
         this.createWidgets();
         this.setupInteractions();
+    }
+
+    private void checkModuleForCorrectness() {
+        if (this.module.getProfessor() == null) {
+            new Alert(AlertType.ERROR, Language.getString("ModuleHasNoProfessor"), javafx.scene.control.ButtonType.OK).showAndWait();
+            this.close();
+        }
     }
 
     private void createWidgets() {

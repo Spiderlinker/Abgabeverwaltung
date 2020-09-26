@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hsharz</groupId>
 	<artifactId>Abgabeverwaltung</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version> 
 	<name>Abgabeverwaltung</name>
 	<description>Software zur Verwaltung von Abgaben im Studium / Semster</description>
 
@@ -135,6 +135,7 @@
 				<configuration>
 					<source>${compile.version}</source>
 					<target>${compile.version}</target>
+                    <encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<!-- Plugins fuer Sourcen und JavaDoc -->

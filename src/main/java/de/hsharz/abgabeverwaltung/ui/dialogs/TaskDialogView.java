@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.ui.utils.AbstractStyledView;
 import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
@@ -56,40 +57,40 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
         LayoutUtils.setColumnWidths(this.root, 70, 30);
         UiUtils.addFilesDropFeature(this.root, this.task::addAttachments);
 
-        this.lblTitle = new Label("Edit Task");
+        this.lblTitle = new Label(Language.getString("EditTask"));
         this.lblTitle.getStyleClass().add("title");
 
         this.fldTitle = new JFXTextField();
         this.fldTitle.textProperty().bindBidirectional(this.task.nameProperty());
-        this.fldTitle.setPromptText("Name of this Task");
+        this.fldTitle.setPromptText(Language.getString("NameOfTask"));
         this.fldTitle.setLabelFloat(true);
 
         this.fldCustomSubject = new JFXTextField();
         this.fldCustomSubject.textProperty().bindBidirectional(this.task.customSubmissionTitleProperty());
-        this.fldCustomSubject.setPromptText("Custom Submission Title / Subject");
+        this.fldCustomSubject.setPromptText(Language.getString("CustomSubmissionTitle"));
         this.fldCustomSubject.setLabelFloat(true);
 
         this.dueDate = new JFXDatePicker();
         this.dueDate.valueProperty().bindBidirectional(this.task.dueDateProperty());
-        this.dueDate.setPromptText("Submission Date");
+        this.dueDate.setPromptText(Language.getString("SubmissionDate"));
         if (this.task.getDueDate() != null) {
             this.dueDate.setValue(this.task.getDueDate());
         }
 
         this.textDescription = new JFXTextArea();
         this.textDescription.textProperty().bindBidirectional(this.task.descriptionProperty());
-        this.textDescription.setPromptText("Description of this task...");
+        this.textDescription.setPromptText(Language.getString("TaskDescription"));
         this.textDescription.setLabelFloat(true);
         this.textDescription.setPrefHeight(150);
 
         this.viewAttachments = new ListView<>(this.task.getAttachments());
         this.viewAttachments.setCellFactory(param -> new AttachmentView(this.task).newListCell());
         this.viewAttachments.setPrefHeight(120);
-        this.viewAttachments.setPlaceholder(new Label("Drag&Drop files here to attach to this task"));
+        this.viewAttachments.setPlaceholder(new Label(Language.getString("DragAndDropFilesAttach")));
 
-        this.btnDelete = new JFXButton("Delete Task", ImageLibrary.getImageView("trash.png"));
+        this.btnDelete = new JFXButton(Language.getString("DeleteTask"), ImageLibrary.getImageView("trash.png"));
 
-        this.btnSave = new JFXButton("Save & Close");
+        this.btnSave = new JFXButton(Language.getString("SaveAndClose"));
         this.btnSave.disableProperty().bind(this.task.nameProperty().isEmpty());
         this.btnSave.getStyleClass().add("save-button");
         this.btnSave.setDefaultButton(true);
@@ -113,7 +114,7 @@ public class TaskDialogView extends AbstractStyledView<GridPane> {
         this.root.add(this.viewAttachments, 0, 4, 2, 1);
 
         this.root.add(this.btnDelete, 0, 5);
-        this.root.add(this.btnSave, 1, 5);
+        this.root.add(this.btnSave, 1, 5, 2, 1);
 
         GridPane.setHalignment(this.lblTitle, HPos.CENTER);
 

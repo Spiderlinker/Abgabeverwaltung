@@ -2,6 +2,7 @@ package de.hsharz.abgabeverwaltung.ui.views;
 
 import com.jfoenix.controls.JFXButton;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.ModuleDatabase;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -12,6 +13,7 @@ import de.hsharz.abgabeverwaltung.ui.utils.ImageLibrary;
 import de.hsharz.abgabeverwaltung.ui.utils.LayoutUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.css.PseudoClass;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,15 +25,18 @@ import javafx.scene.layout.StackPane;
 
 public class ModuleView extends AbstractStyledView<BorderPane> {
 
-    private StackPane              parent;
+    private static final PseudoClass invalidModuleState = PseudoClass.getPseudoClass("invalid");
 
-    private Label                  lblModule;
-    private Button                 btnAddTask;
-    private Button                 btnRemoveModule;
-    private Button                 btnEditModule;
-    private ListView<Task>         viewTasks;
+    private StackPane                parent;
 
-    private ObjectProperty<Module> module = new SimpleObjectProperty<>();
+    private HBox                     boxTitle;
+    private Label                    lblModule;
+    private Button                   btnAddTask;
+    private Button                   btnRemoveModule;
+    private Button                   btnEditModule;
+    private ListView<Task>           viewTasks;
+
+    private ObjectProperty<Module>   module             = new SimpleObjectProperty<>();
 
     public ModuleView(final StackPane parent) {
         super(new BorderPane());
@@ -49,24 +54,27 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
     protected void createWidgets() {
         this.root.setPrefSize(0, 300);
 
+        this.boxTitle = new HBox(5);
+        this.boxTitle.getStyleClass().add("headerBox");
+
         this.lblModule = new Label();
         this.lblModule.getStyleClass().add("header-label");
 
-        this.btnAddTask = new JFXButton("Add Task");
+        this.btnAddTask = new JFXButton(Language.getString("AddTask"));
         this.btnRemoveModule = new JFXButton("", ImageLibrary.getImageView("trash.png"));
         this.btnEditModule = new JFXButton("", ImageLibrary.getImageView("edit.png"));
 
         this.viewTasks = new ListView<>();
         this.viewTasks.setOrientation(Orientation.HORIZONTAL);
         this.viewTasks.setCellFactory(param -> new TaskView(this.parent, this.module).newListCell());
-        this.viewTasks.setPlaceholder(new Label("Click 'Add Task' to create your first Task for this Module"));
+        this.viewTasks.setPlaceholder(new Label(Language.getString("ClickAddTask")));
 
     }
 
     @Override
     protected void setupInteractions() {
         this.btnAddTask.setOnAction(e -> {
-            Task task = new Task("New Task...");
+            Task task = new Task(Language.getString("NewTask"));
             this.module.get().addTask(task);
             new TaskDialog(this.parent, this.module.get(), task).show();
         });
@@ -79,12 +87,10 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
     @Override
     protected void addWidgets() {
 
-        HBox boxTitle = new HBox(5);
-        boxTitle.getChildren().addAll(this.btnAddTask, LayoutUtils.getHSpacer(), this.lblModule, LayoutUtils.getHSpacer(), this.btnEditModule,
+        this.boxTitle.getChildren().addAll(this.btnAddTask, LayoutUtils.getHSpacer(), this.lblModule, LayoutUtils.getHSpacer(), this.btnEditModule,
                 this.btnRemoveModule);
-        boxTitle.getStyleClass().add("headerBox");
 
-        this.root.setTop(boxTitle);
+        this.root.setTop(this.boxTitle);
         this.root.setCenter(this.viewTasks);
     }
 
@@ -103,6 +109,16 @@ public class ModuleView extends AbstractStyledView<BorderPane> {
             if (item == null) {
                 this.setGraphic(null);
                 return;
+            }
+
+            ModuleView.this.boxTitle.pseudoClassStateChanged(invalidModuleState, false);
+            ModuleView.this.lblModule.setGraphic(null);
+
+            // If the professor is not set, the module has an invalid state!
+            // Visualise via background-color of header box
+            if (ModuleView.this.module.get().getProfessor() == null) {
+                ModuleView.this.boxTitle.pseudoClassStateChanged(invalidModuleState, true);
+                ModuleView.this.lblModule.setGraphic(ImageLibrary.getImageView("warning.png"));
             }
 
             ModuleView.this.lblModule.textProperty().bind(item.nameProperty());

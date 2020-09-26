@@ -4,6 +4,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.UUID;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
@@ -17,6 +18,7 @@ import javafx.collections.ObservableList;
 
 public class Task {
 
+    private final UUID                uuid;
     private StringProperty            name                  = new SimpleStringProperty("DefaultName");
     private StringProperty            description           = new SimpleStringProperty();
     private SimpleListProperty<File>  attachments           = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -26,6 +28,7 @@ public class Task {
 
     public Task(final String name) {
         this.setName(name);
+        this.uuid = UUID.randomUUID();
     }
 
     public void setName(final String name) {
@@ -112,6 +115,10 @@ public class Task {
 
     public BooleanProperty isFinishedProperty() {
         return this.isFinished;
+    }
+
+    public UUID getUUID() {
+        return this.uuid;
     }
 
     @Override

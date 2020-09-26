@@ -1,9 +1,16 @@
 package de.hsharz.abgabeverwaltung;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.hildan.fxgson.FxGson;
@@ -25,6 +32,8 @@ public class Abgabeverwaltung extends Application {
     private static final Gson gson = FxGson.coreBuilder().setPrettyPrinting().create();
 
     public static void main(final String[] args) {
+        checkApplicationDirectory();
+        redirectOutputStream();
         launch(args);
     }
 
@@ -33,7 +42,6 @@ public class Abgabeverwaltung extends Application {
 
         boolean firstStartup = !Config.APPLICATION_FOLDER.exists();
 
-        this.checkApplicationDirectory();
         this.checkRequiredFiles();
 
         this.loadConfigurationFiles();
@@ -46,7 +54,7 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
-    private void checkApplicationDirectory() {
+    private static void checkApplicationDirectory() {
         Config.APPLICATION_FOLDER.mkdirs();
     }
 
@@ -65,6 +73,19 @@ public class Abgabeverwaltung extends Application {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static void redirectOutputStream() {
+        try {
+            System.setErr(new PrintStream(Config.ERROR_LOG_FILE));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.setOut(new PrintStream(Config.SYSTEM_LOG_FILE));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -87,7 +108,7 @@ public class Abgabeverwaltung extends Application {
 
     private static <T> T readFromFile(final File file, final Class<T> type) {
         if (file.exists()) {
-            try (FileReader reader = new FileReader(file)) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                 return gson.fromJson(reader, type);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -102,7 +123,7 @@ public class Abgabeverwaltung extends Application {
     }
 
     private static void writeToFile(final File file, final Object content) {
-        try (FileWriter writer = new FileWriter(file)) {
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             gson.toJson(content, writer);
         } catch (IOException e) {
             e.printStackTrace();

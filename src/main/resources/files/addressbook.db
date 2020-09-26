@@ -5,13 +5,28 @@
     "gender": "MALE"
   },
   {
+    "lastname": "Adler",
+    "email": "sadler@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
     "lastname": "Drögehorn",
     "email": "odroegehorn@hs-harz.de",
     "gender": "MALE"
   },
   {
+    "lastname": "Kindel",
+    "email": "okindel@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
     "lastname": "Kreyßig",
     "email": "mkreyssig@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Müller",
+    "email": "joergvolkermueller@hs-harz.de",
     "gender": "MALE"
   },
   {
@@ -37,6 +52,11 @@
   {
     "lastname": "Stolze",
     "email": "tstolze@hs-harz.de",
+    "gender": "MALE"
+  },
+  {
+    "lastname": "Stolzenburg",
+    "email": "fstolzenburg@hs-harz.de",
     "gender": "MALE"
   },
   {

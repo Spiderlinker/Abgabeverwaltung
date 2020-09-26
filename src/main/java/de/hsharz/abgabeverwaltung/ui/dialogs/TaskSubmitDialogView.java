@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
 import de.hsharz.abgabeverwaltung.Config;
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.Settings;
 import de.hsharz.abgabeverwaltung.model.Module;
 import de.hsharz.abgabeverwaltung.model.Task;
@@ -85,19 +86,19 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
 
         LayoutUtils.setColumnWidths(this.root, 50, 50);
 
-        this.lblTitle = new Label("Submit Task");
+        this.lblTitle = new Label(Language.getString("SubmitTask"));
         this.lblTitle.getStyleClass().add("title");
 
         this.fldRecipient = new JFXTextField(this.module.getProfessor().getEmail());
         this.fldRecipient.setLabelFloat(true);
-        this.fldRecipient.setPromptText("Recipient(s) (Comma separated)");
+        this.fldRecipient.setPromptText(Language.getString("RecipientsSeparated"));
 
         this.fldSubject = new JFXTextField(String.format(this.submissionTitle, this.module.getName(), this.task.getName()));
         if (this.task.getCustomSubmissionTitle() != null && !this.task.getCustomSubmissionTitle().trim().isEmpty()) {
             this.fldSubject.setText(this.task.getCustomSubmissionTitle());
         }
         this.fldSubject.setLabelFloat(true);
-        this.fldSubject.setPromptText("Submission Title / Subject");
+        this.fldSubject.setPromptText(Language.getString("SubmissionTitle"));
 
         String body = "[BODY]";
         try {
@@ -107,18 +108,18 @@ public class TaskSubmitDialogView extends AbstractStyledView<GridPane> {
         }
         this.textBody = new JFXTextArea(body);
         this.textBody.setLabelFloat(true);
-        this.textBody.setPromptText("Content");
+        this.textBody.setPromptText(Language.getString("Content"));
 
-        this.btnSubmit = new JFXButton("Submit Task", ImageLibrary.getImageView("mail_send.png"));
+        this.btnSubmit = new JFXButton(Language.getString("SubmitTask"), ImageLibrary.getImageView("mail_send.png"));
         this.btnSubmit.setContentDisplay(ContentDisplay.RIGHT);
         this.btnSubmit.setGraphicTextGap(10);
-        this.btnCancel = new JFXButton("Cancel");
+        this.btnCancel = new JFXButton(Language.getString("Cancel"));
 
         ObservableList<String> attachments = FXCollections
                 .observableArrayList(this.task.getAttachments().stream().map(File::getAbsolutePath).collect(Collectors.toList()));
         this.viewAttachments = new ListView<>(attachments);
         this.viewAttachments.setPrefHeight(150);
-        this.viewAttachments.setPlaceholder(new Label("No Files attached!", ImageLibrary.getImageView("warning.png")));
+        this.viewAttachments.setPlaceholder(new Label(Language.getString("NoFilesAttached"), ImageLibrary.getImageView("warning.png")));
         this.viewAttachments.setStyle("-fx-background-color: -fx-orange");
     }
 

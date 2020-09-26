@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 
+import de.hsharz.abgabeverwaltung.Language;
 import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
@@ -46,9 +47,9 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
     protected void createWidgets() {
         this.root.getStyleClass().add("root");
         this.root.setPrefSize(700, 600);
-        LayoutUtils.setColumnWidths(this.root, 20, 60, 20);
+        LayoutUtils.setColumnWidths(this.root, 20, 55, 25);
 
-        this.lblTitle = new Label("Address Book");
+        this.lblTitle = new Label(Language.getString("AddressBook"));
         this.lblTitle.getStyleClass().add("title");
 
         this.boxGender = new JFXComboBox<>(FXCollections.observableArrayList(Gender.values()));
@@ -56,21 +57,21 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
         this.boxGender.getSelectionModel().selectFirst();
 
         this.fldLastname = new JFXTextField();
-        this.fldLastname.setPromptText("Last name");
+        this.fldLastname.setPromptText(Language.getString("LastName"));
         this.fldLastname.setLabelFloat(true);
 
         this.fldEmail = new JFXTextField();
-        this.fldEmail.setPromptText("E-Mail-Address");
+        this.fldEmail.setPromptText(Language.getString("EmailAddress"));
         this.fldEmail.setLabelFloat(true);
 
-        this.btnAdd = new JFXButton("Add", ImageLibrary.getImageView("add_contact.png"));
+        this.btnAdd = new JFXButton(Language.getString("Add"), ImageLibrary.getImageView("add_contact.png"));
         this.btnAdd.setDefaultButton(true);
-        this.btnClose = new JFXButton("Close");
+        this.btnClose = new JFXButton(Language.getString("Close"));
         this.btnClose.getStyleClass().add("save-button");
 
         this.viewPerson = new ListView<>(AddressBook.getContacts());
         this.viewPerson.setCellFactory(param -> new PersonView().newListCell());
-        this.viewPerson.setPlaceholder(new Label("Add a new contact"));
+        this.viewPerson.setPlaceholder(new Label(Language.getString("AddNewContact")));
     }
 
     @Override
@@ -102,6 +103,7 @@ public class AddressBookDialogView extends AbstractStyledView<GridPane> {
         this.root.add(this.btnClose, 2, 4);
 
         GridPane.setHalignment(this.lblTitle, HPos.CENTER);
+        GridPane.setHalignment(this.btnClose, HPos.RIGHT);
     }
 
 }
