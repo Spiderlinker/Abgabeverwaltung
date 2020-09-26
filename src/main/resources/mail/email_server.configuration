@@ -1,9 +1,0 @@
-# Mail Server Configuration
-mail.imap.host=postbox.hs-harz.de
-mail.smtp.host=sendmail.hs-harz.de
-mail.smtp.port=25
-mail.smtp.auth=true
-mail.smtp.starttls.enable=true
-# Configuration for other mail servers like GMX
-# mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory
-# mail.smtp.socketFactory.fallback=false
