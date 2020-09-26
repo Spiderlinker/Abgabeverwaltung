@@ -3,10 +3,10 @@ package de.hsharz.abgabeverwaltung.addresses;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
-import java.io.File;
-import java.io.IOException;
+import de.hsharz.abgabeverwaltung.model.addresses.AddressBook;
+import de.hsharz.abgabeverwaltung.model.addresses.Gender;
+import de.hsharz.abgabeverwaltung.model.addresses.Person;
 
 class AddressBookTest {
 
@@ -79,25 +79,4 @@ class AddressBookTest {
         Assertions.assertTrue(AddressBook.getContacts().isEmpty());
     }
 
-    @Test
-    void writeReadAddressBook(@TempDir File tempDir) throws IOException {
-
-        File tempFile = new File(tempDir, "addressBook.test");
-        System.out.println("Saving AddressBook to " + tempFile);
-
-        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
-        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-
-        AddressBook.addContacts(p, p2);
-
-        AddressBook.writeToFile(tempFile);
-        AddressBook.getContacts().clear();
-
-        AddressBook.readFromFile(tempFile);
-        Assertions.assertEquals(2, AddressBook.getContacts().size());
-        Assertions.assertTrue(AddressBook.getContacts().contains(p));
-        Assertions.assertTrue(AddressBook.getContacts().contains(p2));
-
-
-    }
 }
