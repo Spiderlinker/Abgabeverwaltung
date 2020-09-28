@@ -71,7 +71,7 @@ class AddressBookTest {
     }
 
     @Test
-    public void getContactsEmpty() {
+    void getContactsEmpty() {
         Assertions.assertTrue(AddressBook.getContacts().isEmpty());
     }
 

@@ -19,4 +19,8 @@ public class Config {
     public static final File   SYSTEM_LOG_FILE                 = new File(APPLICATION_FOLDER.getAbsolutePath(), "systemLog.txt");
     public static final File   ERROR_LOG_FILE                  = new File(APPLICATION_FOLDER.getAbsolutePath(), "errorLog.txt");
 
+    private Config() {
+        // Utility class, should not be instantiated
+    }
+
 }

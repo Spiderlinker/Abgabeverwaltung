@@ -1,6 +1,6 @@
 package de.hsharz.abgabeverwaltung.ui.dialogs;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import com.jfoenix.controls.JFXDialog;
@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 
 public class DialogCache {
 
-    private static Map<DialogType, JFXDialog> dialogs = new HashMap<>();
+    private static Map<DialogType, JFXDialog> dialogs = new EnumMap<>(DialogType.class);
 
     public static void init(final StackPane parent) {
         dialogs.put(DialogType.SETTINGS, new SettingsDialog(parent));

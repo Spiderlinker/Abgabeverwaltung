@@ -23,7 +23,7 @@ public class BasicMail {
     private Properties             properties    = new Properties();
 
     public BasicMail() {
-
+        // Default constructor
     }
 
     public void setFrom(final String from, final String name) {

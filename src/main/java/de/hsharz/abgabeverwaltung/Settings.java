@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class Settings {
@@ -58,7 +59,7 @@ public class Settings {
             propertiesFile.getParentFile().mkdirs();
             propertiesFile.createNewFile();
             try (FileOutputStream outputStream = new FileOutputStream(propertiesFile)) {
-                properties.store(outputStream, "");
+                properties.store(outputStream, "Saved on: " + LocalDateTime.now().toString());
             }
         } catch (IOException e) {
             e.printStackTrace();

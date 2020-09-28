@@ -12,6 +12,10 @@ public class Language {
     private static ResourceBundle bundle;
     private static Locale         locale         = DEFAULT_LOCALE;
 
+    private Language() {
+        // Utility class, should not be instantiated
+    }
+
     public static void changeLocale(final Locale newLocale) {
         locale = Objects.requireNonNull(newLocale);
         bundle = ResourceBundle.getBundle("localization.MyResource", locale);

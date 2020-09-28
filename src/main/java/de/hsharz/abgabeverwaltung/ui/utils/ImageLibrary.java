@@ -12,6 +12,10 @@ public class ImageLibrary {
 
     private static Map<String, Image> loadedImages = new HashMap<>();
 
+    private ImageLibrary() {
+        // Utility class, should not be instantiated
+    }
+
     public static Image getImage(final String imageName) {
         Image image = loadedImages.get(imageName);
         if (image == null) {

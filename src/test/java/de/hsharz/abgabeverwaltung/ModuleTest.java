@@ -1,7 +1,13 @@
 package de.hsharz.abgabeverwaltung;
 
-import de.hsharz.abgabeverwaltung.model.Module;
-import de.hsharz.abgabeverwaltung.model.Task;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +15,10 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import de.hsharz.abgabeverwaltung.model.Module;
+import de.hsharz.abgabeverwaltung.model.Task;
 import de.hsharz.abgabeverwaltung.model.addresses.Gender;
 import de.hsharz.abgabeverwaltung.model.addresses.Person;
-
-import java.io.*;
-import java.time.LocalDate;
 
 class ModuleTest {
 
@@ -30,63 +35,63 @@ class ModuleTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"", "   "})
+    @ValueSource(strings = { "", "   " })
     void setNameEmptyFail(final String name) {
         Assertions.assertThrows(NullPointerException.class, () -> this.testObject.setName(name));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Test", "Semester #1"})
+    @ValueSource(strings = { "Test", "Semester #1" })
     void getName(final String name) {
         this.testObject.setName(name);
         Assertions.assertEquals(name, this.testObject.getName());
     }
 
-//    @Test
-//    void getProfessorEmpty() {
-//        Assertions.assertNotNull(this.testObject.getProfessors());
-//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-//    }
-//
-//    @Test
-//    void addProfessor() {
-//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-//
-//        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
-//        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-//
-//        this.testObject.addProfessors(p);
-//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-//        this.testObject.addProfessors(p2);
-//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-//        this.testObject.addProfessors(p2);
-//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-//    }
-//
-//    @Test
-//    void addProfessorNull() {
-//        Assertions.assertThrows(NullPointerException.class, () -> this.testObject.addProfessors((Person[]) null));
-//    }
-//
-//    @Test
-//    void removeProfessor() {
-//        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
-//
-//        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
-//        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-//
-//        this.testObject.addProfessors(p);
-//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-//        this.testObject.addProfessors(p2);
-//        Assertions.assertEquals(2, this.testObject.getProfessors().size());
-//
-//        this.testObject.removeProfessor(p);
-//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-//        this.testObject.removeProfessor(p);
-//        Assertions.assertEquals(1, this.testObject.getProfessors().size());
-//        this.testObject.removeProfessor(p2);
-//        Assertions.assertEquals(0, this.testObject.getProfessors().size());
-//    }
+    //    @Test
+    //    void getProfessorEmpty() {
+    //        Assertions.assertNotNull(this.testObject.getProfessors());
+    //        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+    //    }
+    //
+    //    @Test
+    //    void addProfessor() {
+    //        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+    //
+    //        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
+    //        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
+    //
+    //        this.testObject.addProfessors(p);
+    //        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+    //        this.testObject.addProfessors(p2);
+    //        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+    //        this.testObject.addProfessors(p2);
+    //        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+    //    }
+    //
+    //    @Test
+    //    void addProfessorNull() {
+    //        Assertions.assertThrows(NullPointerException.class, () -> this.testObject.addProfessors((Person[]) null));
+    //    }
+    //
+    //    @Test
+    //    void removeProfessor() {
+    //        Assertions.assertTrue(this.testObject.getProfessors().isEmpty());
+    //
+    //        Person p = new Person("Prof#1", "prof1@hs-harz.de", Gender.MALE);
+    //        Person p2 = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
+    //
+    //        this.testObject.addProfessors(p);
+    //        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+    //        this.testObject.addProfessors(p2);
+    //        Assertions.assertEquals(2, this.testObject.getProfessors().size());
+    //
+    //        this.testObject.removeProfessor(p);
+    //        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+    //        this.testObject.removeProfessor(p);
+    //        Assertions.assertEquals(1, this.testObject.getProfessors().size());
+    //        this.testObject.removeProfessor(p2);
+    //        Assertions.assertEquals(0, this.testObject.getProfessors().size());
+    //    }
 
     @Test
     void getTasksEmpty() {
@@ -135,7 +140,7 @@ class ModuleTest {
     }
 
     @Test
-    void writeReadFile(@TempDir File tempDir) throws IOException, ClassNotFoundException {
+    void writeReadFile(@TempDir final File tempDir) throws IOException, ClassNotFoundException {
         File tempFile = new File(tempDir, "module.test");
         System.out.println("Saving Module to test file: " + tempFile);
 
@@ -148,32 +153,29 @@ class ModuleTest {
         task.addAttachments(new File("C:\\Users\\test.txt"), new File("/some/other/file.extension"));
 
         Person person = new Person("Prof#2", "prof2@hs-harz.de", Gender.FEMALE);
-        Person person2 = new Person("Prof#3", "profasdf@hs-harz.de", Gender.DIVERS);
 
-        testObject.setProfessor(person);
-        testObject.addTask(task);
-        testObject.addTask(task2);
+        this.testObject.setProfessor(person);
+        this.testObject.addTask(task);
+        this.testObject.addTask(task2);
 
-        try (FileOutputStream stream = new FileOutputStream(tempFile);
-             ObjectOutputStream output = new ObjectOutputStream(stream)) {
-            output.writeObject(testObject);
+        try (FileOutputStream stream = new FileOutputStream(tempFile); ObjectOutputStream output = new ObjectOutputStream(stream)) {
+            output.writeObject(this.testObject);
         }
 
         Module readTask = null;
-        try (FileInputStream inputStream = new FileInputStream(tempFile);
-             ObjectInputStream input = new ObjectInputStream(inputStream)) {
+        try (FileInputStream inputStream = new FileInputStream(tempFile); ObjectInputStream input = new ObjectInputStream(inputStream)) {
             readTask = (Module) input.readObject();
         }
 
         Assertions.assertNotNull(readTask);
 
-        Assertions.assertEquals(testObject.getName(), readTask.getName());
-        Assertions.assertTrue(testObject.getProfessor().equals(readTask.getProfessor()));
+        Assertions.assertEquals(this.testObject.getName(), readTask.getName());
+        Assertions.assertTrue(this.testObject.getProfessor().equals(readTask.getProfessor()));
 
-        Assertions.assertEquals(testObject.getTasks().size(), readTask.getTasks().size());
+        Assertions.assertEquals(this.testObject.getTasks().size(), readTask.getTasks().size());
         for (Task t : readTask.getTasks()) {
             System.out.println("Checking task " + t.getName());
-            Assertions.assertTrue(testObject.getTasks().contains(t));
+            Assertions.assertTrue(this.testObject.getTasks().contains(t));
         }
 
     }
