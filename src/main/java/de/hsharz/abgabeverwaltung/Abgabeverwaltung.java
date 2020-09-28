@@ -29,7 +29,9 @@ import javafx.stage.Stage;
 
 public class Abgabeverwaltung extends Application {
 
-    private static final Gson gson = FxGson.coreBuilder().setPrettyPrinting().create();
+    private static final Gson gson         = FxGson.coreBuilder().setPrettyPrinting().create();
+
+    private static boolean    firstStartup = !Config.APPLICATION_FOLDER.exists();
 
     public static void main(final String[] args) {
         checkApplicationDirectory();
@@ -40,8 +42,6 @@ public class Abgabeverwaltung extends Application {
     @Override
     public void start(final Stage stage) throws Exception {
 
-        boolean firstStartup = !Config.APPLICATION_FOLDER.exists();
-
         this.checkRequiredFiles();
 
         this.loadConfigurationFiles();
@@ -49,7 +49,7 @@ public class Abgabeverwaltung extends Application {
 
         this.createUiAndShow(stage);
 
-        if (firstStartup) {
+        if (Abgabeverwaltung.firstStartup) {
             DialogCache.getDialog(DialogCache.DialogType.SETTINGS).show();
         }
     }
@@ -136,7 +136,8 @@ public class Abgabeverwaltung extends Application {
         stage.setScene(scene);
         stage.setOnCloseRequest(e -> saveApplicationState());
 
-        stage.setTitle("Abgabeverwaltung");
+        stage.setTitle(
+                "Anwendung zur zeitlichen Erfassung semesterbegleitender Arbeiten, welche der Festigung der in den wenig lehrreichen Vorlesungen behandelten Themen dienen");
         stage.show();
     }
 
