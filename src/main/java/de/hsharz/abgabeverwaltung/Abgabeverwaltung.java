@@ -54,6 +54,10 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
+    /**
+     * Check Application directory and create it
+     * (and it's parent directories) if it doesn't exist yet
+     */
     private static void checkApplicationDirectory() {
         Config.APPLICATION_FOLDER.mkdirs();
     }
@@ -76,6 +80,10 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
+    /**
+     * Redirect the system and error output stream to the pre-defined
+     * system and error log file in the application folder
+     */
     private static void redirectOutputStream() {
         try {
             System.setErr(new PrintStream(Config.ERROR_LOG_FILE));
@@ -89,11 +97,20 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
+    /**
+     * Load Configuration files. This includes
+     * the email properties (email and password of user)
+     * and the email server configuration
+     */
     private void loadConfigurationFiles() {
         Settings.reloadEmailProperties();
         Settings.reloadEmailServerProperties();
     }
 
+    /**
+     * Load from file the address book (all professors + email) and
+     * the modules incl. their tasks.
+     */
     private void loadApplicationState() {
         Person[] persons = readFromFile(Config.ADDRESS_BOOK_FILE, Person[].class);
         if (persons != null) {
@@ -106,6 +123,14 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
+    /**
+     * Read the given type from the specified file
+     *
+     * @param <T> Type of object contained in file
+     * @param file file to read
+     * @param type Class of object contained in file
+     * @return
+     */
     private static <T> T readFromFile(final File file, final Class<T> type) {
         if (file.exists()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
@@ -117,11 +142,19 @@ public class Abgabeverwaltung extends Application {
         return null;
     }
 
+    /**
+     * Save address book and modules incl. their tasks to file
+     */
     private static void saveApplicationState() {
         writeToFile(Config.ADDRESS_BOOK_FILE, AddressBook.getContacts());
         writeToFile(Config.MODULES_FILE, ModuleDatabase.getInstance().getModules());
     }
 
+    /**
+     * Write given object to specified file
+     * @param file file to write object to
+     * @param content content / object to write to file
+     */
     private static void writeToFile(final File file, final Object content) {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             gson.toJson(content, writer);
@@ -130,6 +163,10 @@ public class Abgabeverwaltung extends Application {
         }
     }
 
+    /**
+     * Create UserInterface and show on sreen
+     * @param stage stage to create ui on
+     */
     private void createUiAndShow(final Stage stage) {
         Scene scene = new Scene(new SemesterView().getPane(), 1400, 850);
         scene.getStylesheets().add(this.getClass().getResource("/style/Application.css").toExternalForm());
