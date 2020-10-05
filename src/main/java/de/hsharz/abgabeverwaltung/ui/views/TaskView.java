@@ -49,6 +49,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
     private HBox                    boxButton;
 
     private Button                  btnSubmit;
+    private Button                  btnFinish;
     private Button                  btnDelete;
     private Button                  btnRedo;
 
@@ -89,6 +90,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
 
         this.boxButton = new HBox(10);
         this.btnSubmit = new JFXButton(Language.getString("ReviewAndSubmit"), ImageLibrary.getImageView("check_next.png"));
+        this.btnFinish = new JFXButton("", ImageLibrary.getImageView("finished.png"));
         this.btnRedo = new JFXButton(Language.getString("ReOpen"), ImageLibrary.getImageView("repeat.png"));
         this.btnDelete = new JFXButton("", ImageLibrary.getImageView("trash.png"));
 
@@ -116,6 +118,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
 
         this.btnSubmit.setOnAction(e -> new TaskSubmitDialog(this.parent, this.module.get(), this.task).show());
         this.btnRedo.setOnAction(e -> this.task.setFinished(false));
+        this.btnFinish.setOnAction(e -> this.task.setFinished(true));
         this.btnDelete.setOnAction(e -> this.module.get().removeTask(this.task));
 
     }
@@ -128,7 +131,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
         this.taskBox.getChildren().add(this.lblAttachments);
         this.taskBox.getChildren().add(LayoutUtils.getVSpacer());
 
-        this.boxButton.getChildren().addAll(this.btnSubmit);
+        this.boxButton.getChildren().addAll(this.btnFinish, LayoutUtils.getHSpacer(), this.btnSubmit);
         this.boxButton.setAlignment(Pos.CENTER_RIGHT);
         this.taskBox.getChildren().add(this.boxButton);
 
@@ -193,7 +196,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
                 TaskView.this.boxButton.getChildren().addAll(TaskView.this.btnDelete, TaskView.this.btnRedo);
                 TaskView.this.taskBox.pseudoClassStateChanged(finished, true);
             } else {
-                TaskView.this.boxButton.getChildren().add(TaskView.this.btnSubmit);
+                TaskView.this.boxButton.getChildren().addAll(TaskView.this.btnFinish, TaskView.this.btnSubmit);
 
                 if (TaskView.this.task.getDueDate() == null) {
                     TaskView.this.taskBox.pseudoClassStateChanged(muchTimeLeft, true);
