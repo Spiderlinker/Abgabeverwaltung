@@ -235,7 +235,7 @@ public class TaskView extends AbstractStyledView<StackPane> {
 											Bindings.createStringBinding(
 													() -> task.getDueDate()
 															.format(DateTimeFormatter
-																	.ofPattern("dd. MM yyyy")),
+																	.ofPattern("dd.MM.yyyy")),
 													task.dueDateProperty())));
 			TaskView.this.lblRemainingDays.textProperty()
 					.bind(Bindings.when(TaskView.this.task.dueDateProperty().isNull()).then("oo")
