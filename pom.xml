@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.hsharz</groupId>
 	<artifactId>Abgabeverwaltung</artifactId>
-	<version>0.1.0-SNAPSHOT</version> 
+	<version>0.1.2-SNAPSHOT</version> 
 	<name>Abgabeverwaltung</name>
 	<description>Software zur Verwaltung von Abgaben im Studium / Semster</description>
 
@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Repository Settings -->
-		<server.url>http://spiderlinker.duckdns.org</server.url>
+		<server.url>http://192.168.1.144</server.url>
 		<repository.url>${server.url}:8090/repository/</repository.url>
 		<repository.url.snapshots>${repository.url}snapshots/</repository.url.snapshots>
 		<repository.url.releases>${repository.url}releases/</repository.url.releases>
@@ -21,7 +21,7 @@
 		<compile.version>1.8</compile.version>
 
 		<sonar.language>java</sonar.language>
-		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin> 
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.jacoco.version>0.8.2</sonar.jacoco.version>
 		<sonar.jacoco.reportPath>../target/jacoco.exec</sonar.jacoco.reportPath>
